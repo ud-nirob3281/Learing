@@ -1,0 +1,35 @@
+{
+  "posts": [
+    {
+      "title": "THIS UD NIROB FRONTEND SERVER",
+      "views": 123,
+      "id": "2"
+    },
+    {
+      "id": "1",
+      "title": "THIS UD NIROB BACKEND SERVER",
+      "views": 500
+    },
+    {
+      "id": "d231",
+      "name": "Ud Nirob",
+      "age": 18,
+      "career": "MERN Stact Web Developer",
+      "views": 0
+    },
+    {
+      "id": "f908",
+      "name": "Safa",
+      "age": 16,
+      "career": "Frontend Web Developer",
+      "views": 0
+    }
+  ],
+  "profile": {
+    "name": "UD NIROB"
+  },
+  "login": {
+    "username": "SAFA",
+    "password": 1234
+  }
+}

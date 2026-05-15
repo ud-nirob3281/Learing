@@ -1,0 +1,14 @@
+step-1 
+chek Node
+ T.C :node -v
+
+step-2
+json-server install
+ T.C:npm install -g json-server
+
+step-3
+make dataBase file like name db.json
+
+step-4
+Run server
+ T.C: json-server --watch db.json

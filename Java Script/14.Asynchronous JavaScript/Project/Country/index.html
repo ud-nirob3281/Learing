@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="src/output.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>UNKNOWN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+
+<body class="bg-black text-white">
+  <h1 class="bg-purple-600 text-2xl text-center font-semibold">Explore The World</h1>
+  <div id="userMain" class="flex justify-center flex-row items-center flex-nowrap">
+    <input type="text" name="" id="" placeholder="Country Name"
+      class="border border-purple-600 m-3 px-3 w-70 lg:w-130 md:w-100 rounded">
+    <button id="search" class="border my-[14px] border-purple-600 rounded text-2xl">🔍</button>
+  </div>
+  <select class="fixed top-22 left-70 border text-purple-600 border-purple-600 lg:left-330" id="fav">
+  </select>
+  <div id="dataShow" class="flex flex-col justify-center mt-5 lg:mt-10 lg:flex-row">
+    <div id="wait" class="hidden text-2xl text-red-600">Loading...</div>
+    <div id="error" class="text-2xl text-red-600"></div>
+    <div class="p-4 text-2xl ml-10" id="data">
+    </div>
+    <div class="h-[280px] w-[80%] ml-15 lg:w-[50%]" id="map"></div>
+  </div>
+</body>
+<script src="JavaScript.js"></script>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Rahim",
+      "age": 22
+    },
+    {
+      "id": 2,
+      "name": "Karim",
+      "age": 25
+    },
+    {
+      "id": 3,
+      "name": "Nirob",
+      "age": 21
+    }
+  ],
+  "status": "success"
+}

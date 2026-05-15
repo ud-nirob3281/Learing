@@ -1,0 +1,32 @@
+body {
+  background: black;
+  color: aqua;
+}
+.main1 {
+  width: 40%;
+}
+.main2 {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+.main-cont {
+  display: flex;
+}
+img {
+  width: 300px;
+  border-radius: 16px;
+  box-shadow: 0 0 50px white;
+}
+button {
+  width: 100px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px white;
+  border: 0;
+  transition: 1s;
+}
+button:hover {
+  font-size: 15px;
+  width: 120px;
+}
