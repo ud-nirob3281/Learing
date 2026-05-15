@@ -1,0 +1,12 @@
+#main{
+ background: linear-gradient(to right ,blue,red);
+ display: inline-block;
+ padding: 10px 40px;
+}
+input{
+ display: block;
+ margin: 10px 0;
+ background: linear-gradient(to right ,blue,red);
+ border: 0;
+ width: 100px;
+}

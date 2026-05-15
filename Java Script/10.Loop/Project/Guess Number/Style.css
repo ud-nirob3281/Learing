@@ -1,0 +1,96 @@
+:root {
+  --background: linear-gradient(45deg, #be2edd, #c4e538, #eb4d4b);
+  --background: linear-gradient(#c4e538);
+  --shadow: 0 0 10px #c4e538, 0 0 20px #c4e538, 0 0 40px #c4e538,
+    0 0 80px #c4e538;
+  --color: black;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: cursive;
+  background-color: black;
+  color: white;
+}
+div {
+  background: linear-gradient(45deg, #4cd137, #e84118);
+  box-shadow: ;
+  padding: 20px;
+  border-radius: 10px;
+  width: 520px;
+  margin: 30px auto;
+}
+h1 {
+  color: var(--color);
+  margin-bottom: 13px;
+  text-shadow: var(--shadow);
+  font-family: sans-serif;
+}
+p {
+  background: var(--background);
+  box-shadow: var(--shadow);
+  color: var(--color);
+  width: 450px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+}
+input {
+  border-radius: 5px;
+  border: 0;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  color: var(--color);
+  background: var(--background);
+  box-shadow: var(--shadow);
+}
+input:focus {
+  outline: none;
+}
+button {
+  width: 50px;
+  height: 28px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-family: cursive;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--color);
+  background: var(--background);
+  box-shadow: var(--shadow);
+}
+select {
+  border: 0;
+  border-radius: 5px;
+  font-family: cursive;
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 3px;
+  color: var(--color);
+  background: var(--background);
+  box-shadow: var(--shadow);
+}
+select:focus {
+  outline: none;
+}
+option {
+  font-family: cursive;
+  color: black;
+}
+#result {
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  color: var(--color);
+  background: var(--background);
+  box-shadow: var(--shadow);
+}
+#show{
+  width: 80px;
+}

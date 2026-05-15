@@ -1,0 +1,20 @@
+.faq-item {
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+/* Way-1 css*/
+.question {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.answer {
+  display: none;
+  margin-top: 5px;
+}
+
+.show {
+  display: block;
+}

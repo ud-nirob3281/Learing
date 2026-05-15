@@ -1,0 +1,12 @@
+button {
+  background: greenyellow;
+  border: 0;
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: sans-serif;
+  display: block;
+  margin: 50px auto 15px;
+  border-radius: 10px;
+  transition: 0.9s;
+}

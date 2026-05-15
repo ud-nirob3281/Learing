@@ -1,0 +1,15 @@
+.content {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+.activeColor {
+  background: blue;
+  color: white;
+}
+button {
+  background: gray;
+  color: black;
+}

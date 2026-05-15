@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/*! PlaceHolder Edit*/
+input[type='text']::placeholder {
+  font-family: cursive;
+  color: red;
+}
+textarea::placeholder {
+  font-family: fantasy;
+  color: blue;
+}
+
+body {
+  text-align: center;
+  background: black;
+  color: aqua;
+}
+button {
+  background: greenyellow;
+  border: 0;
+  padding: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: sans-serif;
+  display: block;
+  margin: 50px auto 15px;
+  border-radius: 10px;
+  transition: 0.9s;
+}
+h1 {
+  font-family: cursive;
+  font-size: 15px;
+  margin-top: -40px;
+  background: red;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: 0.5s;
+  margin-bottom: 20px;
+}
+#text2 {
+  font-family: cursive;
+  position: relative;
+  top: 0px;
+  left: -230px;
+  font-size: 10px;
+  padding: 3px 5px;
+}
+#Form {
+  width: 600px;
+  margin: 0 auto;
+  font-family: cursive;
+}
+label,
+textarea {
+  display: block;
+  text-align: left;
+  margin-top: 8px;
+}
+input {
+  display: block;
+}
+input[type='submit'] {
+  margin-top: 10px;
+  padding: 2px 10px;
+  background: yellow;
+  border: 0;
+  border-radius: 5px;
+}
+#Web_Load{
+  margin-top: 20px;
+  background: yellow;
+}
