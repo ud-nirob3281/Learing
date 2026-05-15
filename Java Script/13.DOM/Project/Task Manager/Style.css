@@ -1,0 +1,19 @@
+.mark {
+  background: greenyellow;
+  display: inline-block;
+}
+.done {
+  font-size: 20px;
+  margin-left: 10px;
+  border: 0;
+  background: transparent;
+}
+.liS {
+  font-size: 30px;
+  list-style: none;
+}
+.edit-input {
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  margin-right: 5px;
+}

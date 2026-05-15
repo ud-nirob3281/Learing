@@ -1,0 +1,51 @@
+.hide {
+  display: none;
+}
+#togg {
+  font-family: 'Courier New', Courier, monospace;
+  background: blue;
+  color: #ddd;
+  padding: 10px;
+  height: 150px;
+}
+#togle {
+  background: green;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 10px;
+}
+.c1 {
+  color: green;
+  font-size: 1.5em;
+  margin: 0;
+  background: gold;
+  display: inline-block;
+  padding: 10px;
+}
+.main_box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.class2 {
+  background: lightblue;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  text-align: center;
+}
+#container {
+  background: lime;
+  padding: 10px;
+}
+#btn1 {
+  background: red;
+  color: white;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.newClass {
+  font-family: cursive;
+}

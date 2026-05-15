@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNKNOWN</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+      'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  h2 {
+    background: black;
+    color: white;
+    text-align: center;
+  }
+
+  #main {
+    /*   display: flex;
+  flex-direction: column;
+  align-items: center; */
+    text-align: center;
+  }
+
+  #allMovieCalculation {
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px 0px;
+    justify-content: center;
+    column-gap: 100px;
+  }
+
+  .totalMovoe,
+  .avgRating,
+  .totalReview {
+    background: gray;
+    padding: 5px 10px;
+    border-radius: 22px;
+  }
+
+  #indivisualReview {
+    margin: 50px auto;
+    width: 60%;
+    max-width: 500px;
+  }
+
+  .movie {
+    background: grey;
+    margin: 10px;
+    font-size: 20px;
+    border-radius: 20px;
+    text-align: left;
+    padding: 5px 10px;
+  }
+
+  #mainGroup {
+    background: gray;
+    margin: 10px;
+    padding: 10px 30px;
+    border-radius: 10px;
+  }
+</style>
+
+<body>
+  <h2>Movie Mania</h2>
+  <div id="main">
+  </div>
+  <div id="allMovieCalculation">
+    <p><span class="totalMovoe"></span></p>
+    <p><span class="avgRating">2.4</span></p>
+    <p><span class="totalReview">5</span></p>
+  </div>
+  <select name="sort" id="sort">
+    <option value="">Sort</option>
+    <option value="ass">Ass</option>
+    <option value="des">Des</option>
+  </select>
+  <div id="group">Group</div>
+  <div id="indivisualReview">
+  </div>
+</body>
+<!-- <script type="module" src="JavaScript.js"></script> -->
+<script type="module">
+  import { movieData } from './data.js';
+  console.log(movieData());
+
+  function data() {
+    let mainData = movieData();
+    main(mainData);
+    dateSort(mainData);
+    ratingsort(mainData);
+  }
+
+  const totalMovoe = document.querySelector('.totalMovoe');
+  const avgRating = document.querySelector('.avgRating');
+  const totalReview = document.querySelector('.totalReview');
+
+  function main(mainData) {
+    //1
+    totalMovoe.innerHTML = mainData.length;
+    //2
+    let totalRat = mainData.flat().reduce((acc, rat) => {
+      return acc + rat.rating;
+    }, 0);
+
+    avgRating.innerHTML = (totalRat / mainData.flat().length).toFixed(2);
+    //3
+    totalReview.innerHTML = mainData.flat().length;
+  }
+
+  const parentMovie = document.querySelector('#indivisualReview');
+  function dateSort(movies) {
+    let sortData = movies.flat().toSorted((a, b) => {
+      return a.on === b.on ? 0 : a.on > b.on ? -1 : 1;
+    });
+    dataStructure(sortData);
+  }
+
+  function ratingsort(movieDa) {
+    //Sort
+    const mainSort = document.getElementById('sort');
+
+    mainSort.onchange = () => {
+      parentMovie.innerHTML = '';
+      if (mainSort.value === 'ass') {
+        let ratShortDes = movieDa.flat().toSorted((a, b) => {
+          return a.rating === b.rating ? 0 : a.rating > b.rating ? -1 : 1;
+        });
+        dataStructure(ratShortDes);
+      } else {
+        let ratShorAss = movieDa.flat().toSorted((a, b) => {
+          return a.rating === b.rating ? 0 : a.rating > b.rating ? 1 : -1;
+        });
+        dataStructure(ratShorAss);
+      }
+    };
+    //group
+    const group = document.getElementById('group');
+    let bulianVal = false;
+    group.onclick = function () {
+      bulianVal = !bulianVal;
+      console.log(bulianVal);
+      if (bulianVal) {
+        parentMovie.innerHTML = '';
+
+        let data = movieDa.flat();
+        let group = Object.groupBy(data, ({ title }) => title);
+        let key = Reflect.ownKeys(group);
+
+        key.forEach(val => {
+          const crDiv = document.createElement('div');
+          crDiv.id = 'mainGroup';
+          crDiv.innerHTML = `<b>${val}</b>`;
+          parentMovie.appendChild(crDiv);
+
+          group[val].forEach(value => {
+            const creMovich = document.createElement('p');
+            creMovich.innerHTML = `✅ <b>${value.by}</b> has Given ${value.rating} Rating With a comment ${value.content}`;
+            crDiv.appendChild(creMovich);
+          });
+        });
+      } else {
+        parentMovie.innerHTML = '';
+        dateSort(movieDa);
+      }
+    };
+  }
+
+  function dataStructure(sort) {
+    sort.map(movie => {
+      const childMovie = document.createElement('div');
+      childMovie.classList.add('movie');
+
+      const nameRating = document.createElement('h3');
+      nameRating.classList.add('nameRating');
+      nameRating.innerText = `${movie.title}-${movie.rating}`;
+      childMovie.appendChild(nameRating);
+
+      const content = document.createElement('p');
+      content.innerText = movie.content;
+      childMovie.appendChild(content);
+
+      const reviewerTime = document.createElement('p');
+      reviewerTime.innerText = `By ${movie.by} on  ${new Intl.DateTimeFormat(
+        'en-BD'
+      ).format(movie.on)}`;
+      childMovie.appendChild(reviewerTime);
+
+      parentMovie.appendChild(childMovie);
+    });
+  }
+
+  data();
+
+</script>
+
+</html>

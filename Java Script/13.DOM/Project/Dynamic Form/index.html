@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>UNKNOWN</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+  }
+
+  body {
+    background: black;
+    color: greenyellow;
+  }
+
+  input {
+    margin: 20px 0px;
+    margin-left: 23px;
+  }
+
+  button {
+    padding: 3px 10px;
+    margin-left: 10px;
+    background: greenyellow;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='number'] {
+    border: 0;
+    height: 20px;
+    border-radius: 10px;
+  }
+
+  input[type='submit'],
+  input[type='reset'] {
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='number']:focus {
+    outline: none;
+  }
+
+  .delete {
+    background: transparent;
+    border: 0;
+    font-size: 20px;
+  }
+</style>
+
+<body>
+  <div id="main">
+    <label><input type="checkbox" id="text"> Text Input</label>
+    <label><input type="checkbox" id="email"> Email Input</label>
+    <label><input type="checkbox" id="number"> Number Input</label>
+    <button id="btn">Add</button>
+  </div>
+  <form id="form">
+    <!--
+    <label>Text Input<input type="text" id="text"> </label>
+    <label><input type="email" id="email"> Email Input</label>
+    <label><input type="number" id="number"> Number Input</label>
+    -->
+    <div id="ac">
+      <input type="submit" value="Submit" id="submit">
+      <input type="reset" value="Reset">
+    </div>
+  </form>
+</body>
+<script>
+  const btn = document.getElementById('btn');
+  const from = document.getElementById('form');
+  const submit = document.querySelector('#submit');
+
+  btn.addEventListener('click', function () {
+    const text = document.getElementById('text');
+    const email = document.getElementById('email');
+    const number = document.getElementById('number');
+
+    function creatorFunc(type, labelName) {
+      const createLabel = document.createElement('label');
+      createLabel.innerText = labelName;
+      from.prepend(createLabel);
+
+      const createInput = document.createElement('input');
+      createInput.type = type;
+      createLabel.appendChild(createInput);
+
+      //Delete
+      const creatrBtn = document.createElement('button');
+      creatrBtn.innerText = '❎';
+      creatrBtn.classList.add('delete');
+
+      createLabel.appendChild(creatrBtn);
+
+      creatrBtn.onclick = () => {
+        createLabel.remove();
+      };
+    }
+
+    if (text.checked) {
+      creatorFunc('text', 'Your Name :');
+    }
+    if (email.checked) {
+      creatorFunc('email', 'Your Email :');
+    }
+    if (number.checked) {
+      creatorFunc('number', 'Your Number :');
+    }
+  });
+
+  submit.onclick = () => {
+    let output = {};
+
+    function submitVal(type, typeName) {
+      const test = document.querySelectorAll(`input[type=${type}]`);
+      let num = 0;
+      test.forEach(val => {
+        output[`${typeName}${num}`] = val.value;
+        num++;
+      });
+    }
+    submitVal('text', 'Your Text');
+    submitVal('email', 'Your Email');
+    submitVal('number', 'Your Number');
+    console.log(output);
+  };
+  from.addEventListener('submit', e => {
+    e.preventDefault();
+  });
+
+</script>
+
+</html>

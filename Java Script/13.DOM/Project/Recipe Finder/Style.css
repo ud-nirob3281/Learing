@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+body {
+  background: black;
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 20px;
+}
+#main {
+  background: #485460;
+  padding: 20px 30px;
+  border-radius: 16px;
+  width: 600px;
+}
+h1 {
+  font-size: 45px;
+  color: #4cd137;
+  margin: 10px 0px;
+}
+input {
+  background: aquamarine;
+  width: 250px;
+  height: 30px;
+  border-radius: 10px;
+  border: 0;
+  padding-left: 5px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+input:focus {
+  outline: none;
+}
+#btnClear {
+  background: transparent;
+  border: 0;
+  font-size: 23px;
+  position: relative;
+  right: 38px;
+  top: 1.5px;
+}
+.title {
+  font-size: 25px;
+  letter-spacing: 2px;
+  color: aqua;
+  margin-top: 15px;
+}
+p {
+  color: #4cd137;
+  font-family: cursive;
+  display: none;
+}
+.hide {
+  display: block;
+}
+/* Animation*/
+
+.recipesChild {
+  overflow: hidden; /* Animation-এর জন্য Important */
+}
+
+/* Alternative CSS Animation */
+.recipesChild p {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.recipesChild p.hide {
+  max-height: 500px;
+  opacity: 1;
+  padding: 10px 15px;
+  margin: 10px 0;
+}
+.title {
+  cursor: pointer;
+  transition: all 0.3s;
+  user-select: none;
+}
+
+.title:hover {
+  color: #4cd137;
+  transform: translateX(5px);
+}
