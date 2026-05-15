@@ -1,0 +1,37 @@
+body {
+  background: black;
+}
+div {
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+}
+button {
+  width: 480.44px;
+  text-shadow: 2px 2px 1px white;
+  background: transparent;
+  position: relative;
+  border: 1px solid red;
+  padding: 5px 10px;
+  color: var(--color, red);
+  border-radius: 5px;
+  font-size: 40px;
+  font-family: Cascadia Code;
+  overflow: hidden;
+  z-index: 1;
+  transition: 0.5s;
+}
+button::before {
+  content: '';
+  position: absolute;
+  transform: skewX(35deg);
+  width: var(--nirob, 20%);
+  height: 110%;
+  top: -1px;
+  left: -20px;
+  background: red;
+  box-shadow: 0 0 10px red, 0 0 20px red, 0 0 40px red, 0 0 80px red,
+    0 0 160px red;
+  z-index: -1;
+  transition: 1s;
+}

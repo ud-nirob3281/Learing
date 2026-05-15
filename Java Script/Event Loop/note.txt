@@ -1,0 +1,8 @@
+First Exacute - Call Stack
+
+If Browser API Like setTimeout,SetInterVal etc is avaliable so It is Go Fo CallBack Queue ; 
+If promise is avaliable So It is go for MicroTask Queue
+
+If Call Stack Clear So Event Loop Go for MicroTasks Queue And Exacute All [If multiple Function Go to MicroTasks Quene So First Exacute Who Came Fist];
+
+If MicroTasks is Clear So Event Look Go for CallBack Quene And Exacute All [If multiple Function Go to CallBack Quene And Time 0 So First Exacute Who Came Fast. Normally First Exacute Who Exacute time Low];

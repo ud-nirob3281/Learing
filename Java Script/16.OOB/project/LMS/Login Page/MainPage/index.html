@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./src/output.css">
+  <title>Document</title>
+</head>
+
+<body class="bg-gray-100 p-6">
+  <div class="max-w-4xl mx-auto space-y-6">
+    <h1 class="text-3xl font-bold text-center">📚 Library Management System</h1>
+
+
+    <!-- Book Entry Form -->
+
+    <section id="bookSection" class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Add a New Book</h2>
+      <form id="bookForm" class="space-y-4" autocomplete="off">
+        <div>
+          <label class="block font-medium" for="title">Title</label>
+          <input type="text" id="title" required class="w-full p-2 border rounded" />
+        </div>
+        <div>
+          <label class="block font-medium" for="author">Author</label>
+          <input type="text" id="author" required class="w-full p-2 border rounded" />
+        </div>
+        <div>
+          <label class="block font-medium" for="genre">Genre</label>
+          <input type="text" id="genre" required class="w-full p-2 border rounded" />
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+          Add Book
+        </button>
+      </form>
+    </section>
+    <div class="flex ml-5">
+      <button id="dwb" class="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+        Download Code
+      </button>
+      <p class="f1 ml-3 mt-1 font-bold"> ( I Make this Only for Tapas Vhai 💖💖)</p>
+    </div>
+    <p class="f1 font-bold text-green-600">My Long Time Wise, I Will Talk With My Teacher Tapas Bhai.<br />😊 Please
+      Content
+      Me
+      on My
+      Whats App<br />My Whats App Number: 01849750913</p>
+    <!-- Available Books -->
+
+    <section id="availableSection" class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Available Books</h2>
+      <ul id="bookList" class="space-y-2"></ul>
+    </section>
+
+    <!-- Borrowed Books -->
+
+    <section id="borrowedSection" class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Borrowed Books</h2>
+      <ul id="borrowedList" class="space-y-2"></ul>
+    </section>
+
+  </div>
+</body>
+<script type="module" src="index.js"></script>
+
+</html>
