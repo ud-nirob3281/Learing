@@ -1,88 +1,103 @@
-//! Write function After Call
+//! JavaScript Functions 
+/*
+Function is a reusable block of code.
+Steps:
+  1. Define/Declare
+  2. Call/Invoke
+  3. May receive parameters & return a value
+Function is a callable object (Reference Type).
+*/
+
+//* 1. Basic Function Declaration & Call
 function fn1() {
   console.log('Hello');
 }
-fn1(); //* Call
-fn1();
+fn1(); // Call: output "Hello"
+fn1(); // পুনরায় call
 
+//* 2. Return Value
 function fn2() {
   return 'Hello';
 }
-console.log(fn2());
+console.log(fn2()); // "Hello"
 
-//! Use Parameter
+// Return-এর পরের code execute হয় না
+function testReturn() {
+  return 'done';
+  console.log('Never runs');
+}
+
+//* 3. Parameters & Arguments
 function fn3(name) {
   console.log(`My name is ${name}`);
 }
-//*Call With Parameter
-fn3('UNKNOWN');
+fn3('UNKNOWN'); // argument pass
 
 function fn4(name) {
   return `My name is ${name}`;
 }
-//*Call With Parameter
 console.log(fn4('UNKNOWN'));
 
-//* Multiple Parameter Use
+// Multiple Parameters
 function fn5(name, age, familyMember) {
-  return `My name is ${name} and My age is ${age} Years Old . My Family ${familyMember} `;
+  return `My name is ${name} and My age is ${age} Years Old. My Family ${familyMember}`;
 }
 console.log(fn5('Ali', 32, 8));
-console.log(fn5('NIROB', 17, 'Only' + ' ' + 3 + ' ' + 'Member'));
+console.log(fn5('NIROB', 17, 'Only ' + 3 + ' Member'));
 
-//* Default Parameters
-
+//* 4. Default Parameters
+// যদি argument না দেওয়া হয় তবে default value ব্যবহার হবে
 function calc(a = 0, b = 0) {
   return 2 * (a + b);
 }
+console.log(calc());     // 0  (a=0,b=0)
+console.log(calc(2, 3)); // 10
 
-const resVar = calc();
-console.log(resVar);
-
-//* Rest Parameter
+//* 5. Rest Parameter (...rest)
+// অসংখ্য argument-কে array হিসেবে পেতে
 function calculateThis(x, y, ...rest) {
-  console.log(x, y, rest);
+  console.log(x, y, rest); // rest array of remaining arguments
 }
-
 calculateThis(1, 2, 3, 4, 5, 6, 7, 8, 9);
+// Output: 1 2 [3,4,5,6,7,8,9]
 
-//! Use Function
-let select = document.querySelector('button');
-function isSubscribe() {
-  select.innerText = 'SUBSCRIBED';
-  select.style.background = 'red';
-}
-select.addEventListener('click', isSubscribe);
+//* 6. Function Expression (Anonymous Function in Variable)
+// Function-কে variable-এ store করা যায়। Hoisting এ শুধু variable-ই hoist হয় (var=undefined, let/const=TDZ)
+const storeFunction = function (x, y) {
+  console.log(x * y);
+};
+storeFunction(5, 6);  // 30
 
-//! Auto Call
+const storeFunction1 = function (x, y) {
+  return x * y;
+};
+console.log(storeFunction1(10, 5)); // 50
+
+//* 7. Arrow Functions (=>)
+// Short syntax, lexical `this` (নিজস্ব `this` নেই), constructor হিসেবে ব্যবহার করা যায় না।
+// Single expression-এ implicit return
+let shortFunction = (x, y) => x + y;
+console.log(shortFunction(5, 6)); // 11
+
+// Multi-statement body { } দিতে হবে, return স্পষ্ট করতে হবে
+let multiArrow = (x, y) => {
+  let result = x * y;
+  return result;
+};
+
+//* 8. IIFE (Immediately Invoked Function Expression)
+// Declare & execute একসাথে, private scope তৈরি করতে ব্যবহার হয়।
 (function () {
   console.log('I am Self Call Function');
 })();
 
-//* Auto call use Parameter
+// Parameter সহ
 (function (name) {
   console.log(`I am auto call function ${name}`);
 })('parameter');
 
-//! Function Stotre In Varriable
-let storeFunction = function (x, y) {
-  console.log(x * y);
-};
-storeFunction(5, 6);
-storeFunction(2, 50);
-
-let storeFunction1 = function (x, y) {
-  console.log('Working');
-  return x * y;
-  console.log('Not_Working'); //Return এর পরে কনকিছু কাজ করবে না
-};
-console.log(storeFunction1(10, 5));
-
-//! Arrow Function
-let shortFunction = (x, y) => x + y;
-console.log(shortFunction(5, 6));
-
-//! Nasted Function
+//* 9. Nested Functions & Closure
+// ভেতরের function বাইরের function-এর variable access করতে পারে (closure)।
 function names(name, x, y) {
   console.log(`It is String number in ${x * y}`);
   function say(age) {
@@ -91,42 +106,60 @@ function names(name, x, y) {
   return say(20);
 }
 names('NIROB', 5, 6);
+// Output: "It is String number in 30"
+//         "My name is NIROB My age 20 number 11"
 
-//! Recursion Function
-function countDown(n) {
-  // Base case
-  if (n === 0) {
-    return;
-  }
-  console.log(n);
-  // Recursive call
-  countDown(n - 1);
-}
-countDown(5);
-
-//! Call Back function
-
-toCall = true;
-
+//* 10. Callback Function
+// একটা function-কে আরেকটা function-এ argument হিসেবে pass করা হয়।
+let toCall = true;
 function fnx(parameter) {
   console.log('Call fn1');
-
   if (toCall) {
-    parameter();
+    parameter(); // callback invoke
   }
 }
 fnx(function () {
   console.log('Call fn2');
 });
 
-//!Higher Order function
+// Real-life callback (Event Listener)
+const select = document.querySelector('button');
+function isSubscribe() {
+  select.innerText = 'SUBSCRIBED';
+  select.style.background = 'red';
+}
+select.addEventListener('click', isSubscribe);
+// এখানে isSubscribe হলো callback, click-এ call হবে।
+
+//* 11. Higher-Order Function (HOF)
+// যে function অন্য function return করে বা parameter হিসেবে পায়।
 function newFunc() {
   return function () {
     console.log('Higher order function is run');
   };
 }
 const refunc = newFunc();
-refunc();
+refunc(); // "Higher order function is run"
+
+//* 12. Recursion (Self-calling function)
+function countDown(n) {
+  if (n === 0) return;     // Base case
+  console.log(n);
+  countDown(n - 1);        // Recursive call
+}
+countDown(5); // 5 4 3 2 1
+
+//* 13. Important Notes
+/*
+- Function Declaration: Hoisted (আগে call করা যায়)।
+- Function Expression / Arrow Function: Variable hoisting rules মেনে চলে।
+- Arrow function: constructor নয়, `arguments` object নেই, lexical `this`।
+- Parameters vs Arguments: parameter হলো variable (definition এ), argument হলো value (call এ)।
+- Default parameter: argument undefined holei default নেয়; null দিলে null-ই থাকে।
+- Rest parameter সবসময় শেষে দিতে হয়, ...rest array return করে।
+- Return: function execution শেষ করে এবং value return করে।
+- Callback: Asynchronous ও synchronous দুই ক্ষেত্রেই ব্যবহার হয়।
+*/;
 
 //! Task
 //*1
