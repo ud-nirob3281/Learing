@@ -1,129 +1,132 @@
-//! Arithmemtic Oparator
+//! JavaScript Operators (অপারেটরসমূহ)
+
+//* 1. Arithmetic Operators (গাণিতিক অপারেটর)
 let a = 50;
 let b = 20;
 
-let c = a + b;
-let d = a % b; //ভাগশেষ লাগলে;
+let sum = a + b;         // 70
+let sub = a - b;         // 30
+let mul = a * b;         // 1000
+let div = a / b;         // 2.5
+let mod = a % b;         // 10 (ভাগশেষ)  → 50 ÷ 20 ভাগফল 2, ভাগশেষ 10
 
-//console.log(c);
-//console.log(d);
+console.log(sum, sub, mul, div, mod);
 
-//* Expondicial Oparator
+// Exponential Operator (**) → পাওয়ার বোঝায়
 let xx = 2;
 let yy = 4;
-//console.log(xx ** yy);//? ** = to the power
+console.log(xx ** yy);   // 2⁴ = 16
 
-//* User input
-/*let userInput = prompt('Enter a number');
-console.log(userInput);
-
-let inputNumber = parseInt(userInput); //* String to convert Number to Use a parseint
-console.log(inputNumber);*/
-
+// Increment / Decrement (++ / --)
+// Prefix: আগে বাড়ায় তারপর use; Postfix: আগে use তারপর বাড়ায়
 let x = 10;
-// x = x + 1;
-//console.log(x);
-//*এটাকে এ ভাবে করা যায়
+console.log(x++);    // 10  (আগে print 10, তারপর x = 11)
+console.log(x);      // 11
+console.log(++x);    // 12  (আগে বাড়িয়ে 12, তারপর print)
 
-/*console.log(x++);
-console.log(x);
-console.log(++x);
+console.log(x--);    // 12  (আগে print 12, তারপর x = 11)
+console.log(x);      // 11
+console.log(--x);    // 10  (আগে কমিয়ে 10, তারপর print)
 
-console.log(x--);
-console.log(x);
-console.log(--x);
-*/
-
-//! Assigment Oprstor
-/*
+//* 2. Assignment Operators (এসাইনমেন্ট অপারেটর)
+// কোনো ভেরিয়েবলের মান আপডেট করতে ব্যবহার হয়।
 let z = 10;
-let z1 = z + 5;
-console.log(z1);
-z += 5; //z = z + 5
-console.log(z);
+z += 5;   // z = z + 5  → 15
+z -= 3;   // z = z - 3  → 12
+z *= 2;   // z = z * 2  → 24
+z /= 4;   // z = z / 4  → 6
+z %= 4;   // z = z % 4  → 2
 
-let z2 = z - 5;
-console.log(z2);
-z -= 5; //z = z - 5
-console.log(z);
+console.log(z); // 2
 
-let z3 = z * 5;
-console.log(z3);
-z *= 5; //z = z * 5
-console.log(z);
+//* 3. Comparison Operators (তুলনামূলক অপারেটর)
+// সবসময় boolean (true/false) return করে।
 
-let z4 = z / 5;
-console.log(z4);
-z /= 5; //z = z / 5
-console.log(z);
-
-let j = 10;
-let k = 15;
-// j = j + k;
-//j += k; // Same
-console.log(j);
-*/
-
-//! Comparison Oparator
 let p = 10;
-let q = '10';
+let q = '10';  // string
 let r = 15;
-console.log(p == q);
-console.log(p === q);
-console.log(p === r);
-console.log(p !== r); //* ! = Not Equal
 
-console.log(p < r);
-console.log(p <= q);
-console.log(p > r);
+// Equality vs Strict Equality
+console.log(p == q);    // true  (value সমান, টাইপ check করে না → type coercion)
+console.log(p === q);   // false (value + type উভয়ই সমান হতে হবে)
 
-//! Logical Oparator
-/*
-//* && And Operator
-console.log(false && false); // false
-console.log(true && false); // false
-console.log(true && true); // true
-console.log(false && true); // false
+console.log(p != r);    // true  (10 != 15)
+console.log(p !== q);   // true  (10 !== '10', কারণ টাইপ ভিন্ন)
 
-console.log('Cow' && 'Horse'); // "Horse"
+// Greater / Less
+console.log(p > r);     // false
+console.log(p < r);     // true
+console.log(p >= 10);   // true
+console.log(p <= q);    // true (coercion হয়ে 10 <= 10)
 
-console.log(4 > 5 && 4 === 6);
-//* || Or Operator
-console.log(false || false); // false
-console.log(true || false); // true
-console.log(true || true); // true
-console.log(false || true); // true
+//* 4. Logical Operators (লজিক্যাল অপারেটর)
 
-console.log('Cow' || 'Horse'); // "Cow"
+// 4.1 && (AND) → সবগুলো true হলেই true
+console.log(false && false);  // false
+console.log(true && false);   // false
+console.log(true && true);    // true
+// Truthy/Falsy-তে প্রথম falsy value বা শেষ truthy value return করে
+console.log('Cow' && 'Horse'); // "Horse" (উভয় truthy → শেষটা return)
+console.log(4 > 5 && 4 === 6); // false
 
-//* Not Operator
-console.log(!false);
+// 4.2 || (OR) → যেকোনো একটা true হলেই true
+console.log(false || false);  // false
+console.log(true || false);   // true
+console.log(false || true);   // true
+// প্রথম truthy value বা শেষ falsy value return করে
+console.log('Cow' || 'Horse'); // "Cow" (প্রথম truthy)
+console.log(0 || null || 'Hello'); // "Hello"
 
-//* ?? Nulish Operator
-let a1 = null ?? 1; // 1
-let a2 = undefined ?? 3; // 3
-const a3 = false ?? 'tapaScript'; // false
-const a4 = 0 ?? 'tapas'; // 0
-*/
+// 4.3 ! (NOT) → বিপরীত boolean
+console.log(!true);           // false
+console.log(!0);              // true (0 falsy)
 
-//! Conditinial (Ternary) Oparator
-j = 10;
-k = 20;
-let t = j < k ? 'Currect' : 'Incurret';
-console.log(t);
-let s = j > k ? 'Currect' : 'Incurret';
-console.log(s);
+// 4.4 ?? (Nullish Coalescing) → null / undefined ছাড়া কিছু হলে বাঁ দিক নিবে
+let a1 = null ?? 1;           // 1 (null পেল, তাই ডানের 1)
+let a2 = undefined ?? 3;      // 3
+const a3 = false ?? 'tapa';   // false (false nullish না, তাই বাঁ দিক)
+const a4 = 0 ?? 'tapas';      // 0 (0-ও nullish না)
 
+//* 5. Conditional (Ternary) Operator (শর্তসাপেক্ষ অপারেটর)
+// Syntax: condition ? exprIfTrue : exprIfFalse
+let j = 10;
+let k = 20;
+
+let result = j < k ? 'Correct' : 'Incorrect';
+console.log(result); // "Correct"
+
+// Real-life example: array filter with ternary
 const cars = [
   { id: 1, title: 'Toyota', isPremium: false },
   { id: 2, title: 'BMW', isPremium: true },
   { id: 3, title: 'Mercedes', isPremium: true },
 ];
 
-// টেস্ট ১: শুধু প্রিমিয়াম কার
-const result1 = cars.filter(car => (true ? car.isPremium : true));
-console.log(result1); // শুধু BMW ও Mercedes দেখাবে
+// When condition is true → returns the boolean car.isPremium (filter condition)
+const premiumCars = cars.filter(car => (true ? car.isPremium : true));
+console.log(premiumCars); // BMW, Mercedes (যাদের isPremium true)
 
-// টেস্ট ২: সব কার
-const result2 = cars.filter(car => (false ? car.isPremium : true));
-console.log(result2); // সব কার দেখাবে
+// When condition is false → always returns true → keep all cars
+const allCars = cars.filter(car => (false ? car.isPremium : true));
+console.log(allCars); // সবগুলো car
+
+//* 6. Other Useful Operators (Bonus)
+// typeof: data type check
+console.log(typeof 42);        // "number"
+console.log(typeof 'Safa');    // "string"
+
+// delete: object property remove
+const obj = { name: 'Test', age: 20 };
+delete obj.age;
+console.log(obj); // { name: 'Test' }
+
+// in: property existence check
+console.log('name' in obj);   // true
+console.log('age' in obj);    // false
+
+//* User Input & String to Number conversion (পূর্বের নোট থেকে)
+/*
+let userInput = prompt('Enter a number');
+let inputNumber = parseInt(userInput); // String থেকে Number
+console.log(inputNumber);
+*/
