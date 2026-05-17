@@ -1,4 +1,8 @@
+
+//! JavaScript Data Types 
+
 /*
+Primitive Data Types (immutable, stored directly in stack):
 - **Primitive Data Types:**
     - `String` - Text values ("Hello")
     - `Number` - Numeric values (25, 3.14)
@@ -10,140 +14,178 @@
 - **Non-Primitive (Reference) Data Types:**
     - `Object` - Collection of key-value pairs
     - `Array` - Ordered list of values
-    - `Function` - Code that can be executed
-  */
-//TODO Primitive Data Types
-//! String
+    - `Function` - Code that can be executed)
+*/
+
+//* typeof operator দিয়ে টাইপ চেক করা যায়
+console.log(typeof "hello");  // "string"
+console.log(typeof 42);       // "number"
+console.log(typeof true);     // "boolean"
+console.log(typeof undefined);// "undefined"
+console.log(typeof null);     // "object"  (ভাষার পুরনো bug)
+console.log(typeof 10n);      // "bigint"
+console.log(typeof Symbol());// "symbol"
+console.log(typeof {});       // "object"
+console.log(typeof []);       // "object"  (array ও object)
+console.log(typeof function(){});// "function"
+
+//=============================
+//! 1. String (স্ট্রিং)
+//=============================
 let firstName = 'NIROB';
-//console.log(typeof firstName);
 
-//* Single Cotation('')এর মধ্য Cotation('') Use
-let names = "My name is nirob'Nirob'U";
-//console.log(names);
+//* String লেখার ৩টা উপায়
+let singleQuote = 'Hello';
+let doubleQuote = "My name is 'Nirob'";     // ভেতরে single quote use করতে পেরেছি
+let templateLiteral = `My name is ${firstName}`; // variable embed, multi-line
 
-//* একটি Varriable এর মধ্য অন্ন Varriable Use করতে হলে
-let fName = `My name is ${firstName}`;
-//console.log(fName);
+//* Escape characters
+const multiLine = "I'am Nirob\nMy age 17 years old\nI am a Web Developer Learner";
+console.log(multiLine);
 
-//* Line Break
-const data =
-  "I'am Nirob\nMy age 17 years old\nI am a student and Web Developer Learner";
-//console.log(data);
+//* Character access ও position
+let word = 'UD NIROB';
+console.log(word.charAt(1));      // "D" (0-index)
+console.log(word.indexOf('N'));   // 3
+console.log(word[0]);             // "U"
 
-//* Word and Word Position see
-let data2 = 'UD NIROB';
-//console.log(data2.charAt(1));
-//console.log(data2.indexOf('N'));
+//* Case change
+console.log(word.toLowerCase());  // "ud nirob"
+console.log(word.toUpperCase());  // "UD NIROB"
 
-//* Letter Case Change
-let data3 = 'Ud Nirob';
-//console.log(data2.toLowerCase());
-//console.log(data3.toUpperCase());
-
-//* পরিবর্তন করতে চাইলে
+//* Replace
 let data4 = 'UNKNOWN DEVELOPER2023 NIROB';
-//console.log(data4.replace('2023', '2024'));
+console.log(data4.replace('2023', '2024')); // "UNKNOWN DEVELOPER2024 NIROB"
 
-//* একটা string কে নির্দিষ্ট সংখ্যক বার রিপিট করতে চাইলে
+//* Repeat
 let str = 'Hello ';
-let repeatedStr = str.repeat(3);
-console.log(repeatedStr); // Output: Hello Hello Hello
+console.log(str.repeat(3)); // "Hello Hello Hello "
 
-//* Split
+//* Split (স্ট্রিং থেকে অ্যারে)
 let data5 = 'I am a Web Developer';
-let allWordArray = data5.split(' '); //*Word by Word
-let allWordArray1 = data5.split(''); //*Letter by Letter
-console.log(allWordArray);
-console.log(allWordArray1);
+console.log(data5.split(' '));  // ['I','am','a','Web','Developer']  (word by word)
+console.log(data5.split(''));   // ['I',' ','a','m',' ',...] (letter by letter)
 
-//Trim (Extra Space Remove)
+//* Trim (দুইপাশের স্পেস বাদ)
 let data6 = '   Hello World   ';
 console.log(data6.trim()); // "Hello World"
 
-//*Word Access
-let namess = 'nirob';
-console.log(namess[0]);
-
-//*substring
-//substring(start, end)
-let str1 = 'ABCDEFGHIJ';
-// Index: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, 7=H, 8=I, 9=J
+//* substring(start, end) → end index included না
+let str1 = 'ABCDEFGHIJ'; // index: 0=A,1=B,...,9=J
 console.log(str1.substring(2, 5)); // "CDE"
 
-//*Slice
-// ৩. slice(start, end) - negative index support করে
-console.log(str1.slice(2, 5)); // "CDE"
+//* slice(start, end) → negative index support
+console.log(str1.slice(2, 5));     // "CDE"
+console.log(str1.slice(-3));      // "HIJ" (last 3)
 
-//! Number
+//* includes, startsWith, endsWith
+console.log(str1.includes('DEF'));    // true
+console.log(str1.startsWith('ABC')); // true
+console.log(str1.endsWith('HIJ'));   // true
+
+//=============================
+//! 2. Number (সংখ্যা)
+//=============================
 let age = 17;
-//console.log(typeof age);
+console.log(typeof age); // "number"
 
-//* দশমিক এ পর নিদিষ্ট সংখ্যা ঘর সংখ্যা লাগলে
+//* দশমিকের পর নির্দিষ্ট ঘর
 let num = 44.445454445;
-//console.log(num.toFixed(2));
+console.log(num.toFixed(2)); // "44.45"  (স্ট্রিং রিটার্ন)
 
-//*Number convert to String
-console.log(num.toString());
+//* Number → String
+console.log(num.toString()); // "44.445454445"
 
-//* String convert to Number
-/* console.log(Number('56.78'));
-console.log(parseInt('56.78')); /
-console.log(parseFloat('56.78'));  */
+//* String → Number
+console.log(Number('56.78'));    // 56.78
+console.log(parseInt('56.78'));  // 56
+console.log(parseFloat('56.78'));// 56.78
+console.log(+'56.78');           // 56.78 (unary plus)
 
-//* কোন কিছু নাম্বার নাকি না তা চেক করতে
-//? isFinite
-console.log(isFinite(123)); // true, কারণ 123 একটি বৈধ সংখ্যা
-console.log(isFinite('abc')); // false, কারণ 'abc' কোনো সংখ্যা নয়
-console.log(isFinite(true)); // true, কারণ true কে 1-এ রূপান্তর করা যায়
-console.log(isFinite(false)); // true, কারণ false কে 0-এ রূপান্তর করা যায়
-console.log(isFinite(undefined)); // false, কারণ undefined কে NaN হিসাবে গণ্য করা হয়
-//? isNan
-console.log(isNaN(123)); // false, কারণ 123 একটি বৈধ সংখ্যা
-console.log(isNaN('abc')); // true, কারণ 'abc' কোনো সংখ্যা নয়
-console.log(isNaN(true)); // false, কারণ true কে 1-এ রূপান্তর করা যায়
-console.log(isNaN(false)); // false, কারণ false কে 0-এ রূপান্তর করা যায়
-console.log(isNaN(undefined)); // true, কারণ undefined কে NaN হিসাবে গণ্য করা হয়
-//* Convert
+//* NaN ও Finite চেক
+console.log(isNaN('abc'));       // true  (Not a Number?)
+console.log(isFinite(123));      // true
+console.log(isFinite('abc'));    // false
+console.log(isFinite(undefined));// false
+
+//* বিভিন্ন base-এ রূপান্তর (toString(base))
 let num2 = 248;
-//console.log(num2.toString(2)); // Decimal to Binary
-//console.log(num2.toString(8)); // Decimal to Octal
-//console.log(num2.toString(16)); // Decimal to Hexadecimal
+console.log(num2.toString(2));  // "11111000" (binary)
+console.log(num2.toString(8));  // "370"      (octal)
+console.log(num2.toString(16)); // "f8"       (hexadecimal)
 
-//* সংখ্যা কয় ঘরে দেখাবে
+//* toPrecision (total significant digits)
 let num3 = 56;
-//console.log(num3.toPrecision(1));
-//console.log(num3.toPrecision(2));
-//console.log(num3.toPrecision(3));
-//console.log(num3.toPrecision(4));
+console.log(num3.toPrecision(1)); // "6e+1"  (1 digit + exponent)
+console.log(num3.toPrecision(2)); // "56"
+console.log(num3.toPrecision(4)); // "56.00"
 
-//! Bigint
-let bigNumber = 9999999999999999n;
-//let bigNumbe2 = 9999999999999999n;
-//এভাবেও লেখা যায়
-let bigNumbe2 = BigInt(9999999999999999);
+//=============================
+//! 3. BigInt (বড় ইন্টিজার)
+//=============================
+let bigNumber = 9999999999999999n;            // n suffix
+let bigNumber2 = BigInt(9999999999999999);    // constructor (সংখ্যা বড় হলে string pass করা ভালো)
+console.log(bigNumber * bigNumber2);          // 99999999999999980000000000000001n
+console.log(typeof bigNumber);                // "bigint"
+// BigInt আর Number mixed করা যায় না (TypeError)
 
-//console.log(bigNumber * bigNumbe2);
-//console.log(typeof bigNumber);
+//=============================
+//! 4. Boolean (বুলিয়ান)
+//=============================
+let isAdult = true;
+let isChild = false;
+console.log(typeof isAdult); // "boolean"
+// Truthy / Falsy values: false, 0, "", null, undefined, NaN → false; বাকি সব true.
 
-//! Boolean
-// true false কে Boolean বলা হয়
-let ifAdult = true;
-//console.log(typeof ifAdult);
-
-//! Undefined
+//=============================
+//! 5. Undefined (অসংজ্ঞায়িত)
+//=============================
 let someInfo;
-//console.log(someInfo);
-//console.log(typeof someInfo);
+console.log(someInfo);      // undefined
+console.log(typeof someInfo); // "undefined"
 
-//TODO Non-Primitive Data Types
-//! Array
-let fruit = ['Apple', 'Orange', 'mango'];
-//console.log(typeof fruit);
+//=============================
+//! 6. Null (খালি)
+//=============================
+let emptyValue = null;
+console.log(emptyValue);        // null
+console.log(typeof emptyValue); // "object" (ভাষার ত্রুটি, আসলে null একটা primitive)
+// Null intentionally empty; Undefined মানে এখনো কিছু দেওয়া হয়নি।
 
-//! Object
-let mobil = {
+//=============================
+//! 7. Symbol (সিম্বল)
+//=============================
+let sym1 = Symbol('id');
+let sym2 = Symbol('id');
+console.log(sym1 === sym2);       // false (প্রতিটি Symbol ইউনিক)
+console.log(typeof sym1);         // "symbol"
+// ব্যবহার: object property key হিসাবে যাতে collision না হয়।
+
+//=============================
+// Non-Primitive (Reference) Types
+//=============================
+
+//! Array (তালিকা)
+let fruits = ['Apple', 'Orange', 'Mango'];
+console.log(typeof fruits); // "object" (Array.isArray দিয়ে চেক করো)
+console.log(Array.isArray(fruits)); // true
+console.log(fruits.length);  // 3
+console.log(fruits[1]);      // "Orange"
+// array methods: push, pop, shift, unshift, splice, forEach, map, filter... (অন্য note)
+
+//! Object (অবজেক্ট)
+let mobile = {
   name: 'Samsung',
   model: 'S24 Ultra',
   price: 124000,
 };
-//console.log(typeof mobil);
+console.log(typeof mobile); // "object"
+console.log(mobile.name);   // "Samsung"
+console.log(mobile['price']);// 124000
+
+//! Function (ফাংশন)
+function greet() {
+  return 'Hello';
+}
+console.log(typeof greet); // "function" (আসলে callable object)
+// function ও object-এর মতোই reference type, পাশ করে reference.
