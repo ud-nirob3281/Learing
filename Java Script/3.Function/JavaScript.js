@@ -164,14 +164,7 @@ countDown(5); // 5 4 3 2 1
 /*
 =============================================
 Topic: Functions in JavaScript (Basic to Advanced)
-=============================================
-আমি আগে মাত্র ১টা question দিয়েছিলাম — I’m sorry for that!
-এখন আমি Basic থেকে Advanced পর্যন্ত অনেকগুলো question দিচ্ছি।
-প্রত্যেকটির জন্য:
-  - Question in English
-  - প্রশ্নের বাংলা অর্থ (Question meaning in Bangla)
-  - Question + Answer explanation Bangla+English মিশিয়ে
-  - How to say the answer in English (সরাসরি Interviewer-কে যেভাবে বলবেন)
+============================================
 
 =============================================
 📌 QUESTION 1
@@ -229,8 +222,11 @@ Function declaration, function expression, arrow function এর মধ্যে
 🎤 Answer in English:
 "There are three primary ways: function declarations, function expressions, and arrow functions.
 Function declarations use the 'function' keyword and are fully hoisted, so you can call them before definition.
-Function expressions assign a function to a variable; only the variable declaration is hoisted, not the assignment, so calling before the line results in TypeError.
-Arrow functions have a shorter syntax, share the hoisting behavior of function expressions, but most importantly they do not have their own 'this' — they inherit 'this' from the surrounding lexical scope. They also cannot be used as constructors and lack the 'arguments' object."
+Function expressions assign a function to a variable; only the variable declaration is hoisted, not the assignment,
+so calling before the line results in TypeError.
+Arrow functions have a shorter syntax, share the hoisting behavior of function expressions,
+but most importantly they do not have their own 'this' — they inherit 'this' from the surrounding lexical scope.
+They also cannot be used as constructors and lack the 'arguments' object."
 
 =============================================
 📌 QUESTION 3
@@ -249,7 +245,8 @@ Function expression/Arrow: কেবল variable declaration hoisted (var হল
 🎤 Answer in English:
 "Hoisting is JavaScript's behavior of moving declarations to the top of their scope during the compilation phase.
 Function declarations are completely hoisted, meaning both the name and body are available throughout the scope, so they can be invoked before their definition.
-However, function expressions and arrow functions are not hoisted in the same way — only the variable declaration is hoisted, leaving the variable undefined or in the temporal dead zone until the assignment line runs. Calling them before initialization results in an error."
+However, function expressions and arrow functions are not hoisted in the same way — only the variable declaration is hoisted, 
+leaving the variable undefined or in the temporal dead zone until the assignment line runs. Calling them before initialization results in an error."
 
 =============================================
 📌 QUESTION 4
@@ -390,8 +387,10 @@ Use cases: data privacy (private variables), module pattern, currying, event han
 🎤 Answer in English:
 "A closure is a combination of a function bundled with references to its surrounding state (the lexical environment).
 In JavaScript, closures are created every time a function is created, at function creation time.
-When an inner function accesses variables from its outer function, and the outer function has finished executing, the inner function still retains access to those variables via closure.
-Closures are powerful for data encapsulation, creating private variables, functional programming patterns like currying, and solving problems with asynchronous code inside loops."
+When an inner function accesses variables from its outer function, and the outer function has finished executing,
+the inner function still retains access to those variables via closure.
+Closures are powerful for data encapsulation, creating private variables, functional programming patterns like currying, 
+  and solving problems with asynchronous code inside loops."
 
 =============================================
 📌 QUESTION 10
@@ -411,8 +410,11 @@ Regular function-এ this dynamic, call site-এর উপর নির্ভর
 Arrow function-এ this lexical — অর্থাৎ যে scope-এ arrow function define করা হয়েছে সেই scope-এর this ধরে নেয়, change করা যায় না। তাই arrow function method বা constructor হিসেবে উপযুক্ত নয়।
 
 🎤 Answer in English:
-"In a regular function, the value of 'this' is determined by how the function is called — dynamically. If called as a method of an object, 'this' refers to that object; if called standalone, 'this' defaults to the global object (undefined in strict mode).
-Arrow functions, on the other hand, do not have their own 'this'; they lexically capture 'this' from the enclosing context at the time they are defined. This makes them great for callbacks where we want to preserve the surrounding 'this', but they cannot be used as constructors or as methods that rely on dynamic context."
+"In a regular function, the value of 'this' is determined by how the function is called — dynamically. If called as a method of an object,
+'this' refers to that object; if called standalone, 'this' defaults to the global object (undefined in strict mode).
+Arrow functions, on the other hand, do not have their own 'this';
+they lexically capture 'this' from the enclosing context at the time they are defined. This makes them great for callbacks where we want to preserve the surrounding 'this', 
+but they cannot be used as constructors or as methods that rely on dynamic context."
 
 =============================================
 📌 QUESTION 11
@@ -458,8 +460,10 @@ Arrow function constructor হিসেবে ব্যবহার করা �
 
 🎤 Answer in English:
 "A constructor function is a regular JavaScript function intended to be called with the 'new' keyword to create objects.
-When we use 'new', four things happen: a new empty object is created, the prototype of that object is set to the constructor's prototype, the constructor function is executed with 'this' pointing to the new object, and unless the function returns its own object, the new object is returned.
-Constructor functions conventionally start with a capital letter. Arrow functions cannot be used as constructors because they lack their own 'this' and a prototype property."
+When we use 'new', four things happen: a new empty object is created, the prototype of that object is set to the constructor's prototype,
+the constructor function is executed with 'this' pointing to the new object, and unless the function returns its own object, the new object is returned.
+Constructor functions conventionally start with a capital letter. Arrow functions cannot be used as constructors because they lack their own 'this'
+and a prototype property."
 
 =============================================
 📌 QUESTION 13
@@ -502,7 +506,8 @@ Side effect: console log করা, DOM modify করা, network call, global v
 Pure function testable, predictable, maintainable। React-এ pure function strongly encouraged।
 
 🎤 Answer in English:
-"A pure function is a function that, given the same inputs, always returns the same output and has no side effects — meaning it doesn't modify any external state, mutate input arguments, or interact with the outside world like logging or network requests.
+"A pure function is a function that, given the same inputs, always returns the same output and has no side effects — meaning it doesn't modify any external state, 
+mutate input arguments, or interact with the outside world like logging or network requests.
 Pure functions are valued because they are predictable, easy to test, and make code easier to reason about.
 Functional programming paradigms and libraries like React heavily encourage pure functions to prevent bugs and improve performance."
 
@@ -531,8 +536,10 @@ function test() {
 var function-scoped হওয়ায় closure বা loop-এ সমস্যা তৈরি করতে পারে, solve করে let।
 
 🎤 Answer in English:
-"In JavaScript, var is function-scoped, meaning it is accessible anywhere within the function it is declared in, regardless of blocks. let and const are block-scoped, confined to the nearest enclosing curly braces.
-Inside a function, if you declare a var inside an if block, it still leaks to the rest of the function. let and const won't leak outside the block. This block scoping helps avoid unintended variable access and issues in loops, making let and c
+"In JavaScript, var is function-scoped, meaning it is accessible anywhere within the function it is declared in, 
+regardless of blocks. let and const are block-scoped, confined to the nearest enclosing curly braces.
+Inside a function, if you declare a var inside an if block, it still leaks to the rest of the function. 
+let and const won't leak outside the block. This block scoping helps avoid unintended variable access and issues in loops, making let and c
 
 
 
