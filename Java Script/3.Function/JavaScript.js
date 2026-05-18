@@ -308,7 +308,6 @@ Rest parameter (...args) ES6-এ এসেছে, এটা actual array, এব
 "The 'arguments' object is an array-like object available inside regular functions (not arrow functions) that contains all the arguments passed to the function.
 However, it's not a real array, so array methods can't be used directly.
 Rest parameters, introduced in ES6, collect remaining arguments into a genuine array, and they work in both regular and arrow functions.
-Rest parameters are named explicitly, making code more readable, whereas 'arguments' is implicitly available."
 
 =============================================
 📌 QUESTION 7
@@ -332,10 +331,8 @@ Arrow function দিয়েও করা যায়: (() => { ... })();
 
 🎤 Answer in English:
 "IIFE stands for Immediately Invoked Function Expression — a function that is defined and executed immediately.
-It's used to create a private scope, preventing variables from leaking into the global scope.
-Before ES6 modules, IIFE was a common pattern for modularity and data privacy.
-The syntax typically involves wrapping a function in parentheses and then invoking it, like (function() { /* code */ })();.
-Arrow functions also work: (() => { ... })();"
+It's used to create a private scope, preventing variables from leaking into the global scope.use for implement module pattern.
+
 
 =============================================
 📌 QUESTION 8
@@ -352,10 +349,9 @@ Higher-order function: একটা function যে অন্য function-কে
 Callback function আসলে higher-order function-এর হাত ধরে কাজ করে।
 
 🎤 Answer in English:
-"A callback function is a function passed as an argument to another function, which is then invoked inside the outer function to complete some action or routine.
+"A callback function is a function passed as an argument to another function, next time call this function who is recive in paramitar.
 A higher-order function is a function that takes one or more functions as arguments, or returns a function.
-For example, Array.prototype.map is a higher-order function that takes a callback to transform each element.
-Callbacks are fundamental for handling asynchronous operations like API calls and event handling."
+
 
 =============================================
 📌 QUESTION 9 (Slightly Advanced)
@@ -384,9 +380,7 @@ Use cases: data privacy (private variables), module pattern, currying, event han
 
 🎤 Answer in English:
 "A closure is a combination of a function bundled with references to its surrounding state (the lexical environment).
-In JavaScript, closures are created every time a function is created, at function creation time.
-When an inner function accesses variables from its outer function, and the outer function has finished executing,
-the inner function still retains access to those variables via closure.
+A closure is created when an inner function can access the variables of its outer function, even after the outer function returns.
 Closures are powerful for data encapsulation, creating private variables, functional programming patterns like currying, 
   and solving problems with asynchronous code inside loops."
 
