@@ -221,9 +221,9 @@ Function declaration, function expression, arrow function এর মধ্যে
 
 🎤 Answer in English:
 "There are three primary ways: function declarations, function expressions, and arrow functions.
-Function declarations use the 'function' keyword and are fully hoisted, so you can call them before definition.
-Function expressions assign a function to a variable; only the variable declaration is hoisted, not the assignment,
-so calling before the line results in TypeError.
+Function declarations use the 'function' keyword and are fully hoisted, so you can call them anywhere before definition.
+Function expressions assign a function to a variable; only the variable declaration is hoisted,
+ so you can't call them anywhere we try to calling before the line results in TypeError.
 Arrow functions have a shorter syntax, share the hoisting behavior of function expressions,
 but most importantly they do not have their own 'this' — they inherit 'this' from the surrounding lexical scope.
 They also cannot be used as constructors and lack the 'arguments' object."
@@ -241,12 +241,10 @@ Hoisting কী? Function-এর ক্ষেত্রে hoisting কিভা�
 Hoisting হলো JavaScript engine-এর একটা default behavior যেখানে declarations (variable এবং function) memory-তে আগে চলে যায় compilation phase-এ।
 Function declaration: পুরো function body hoisted হয়, তাই আগে call করলেও কাজ করে।
 Function expression/Arrow: কেবল variable declaration hoisted (var হলে undefined, let/const হলে TDZ-এ), function body hoisted হয় না। তাই আগে call করলে error (TypeError বা ReferenceError)।
-
 🎤 Answer in English:
-"Hoisting is JavaScript's behavior of moving declarations to the top of their scope during the compilation phase.
-Function declarations are completely hoisted, meaning both the name and body are available throughout the scope, so they can be invoked before their definition.
-However, function expressions and arrow functions are not hoisted in the same way — only the variable declaration is hoisted, 
-leaving the variable undefined or in the temporal dead zone until the assignment line runs. Calling them before initialization results in an error."
+Hoisting is JavaScript engine default behavior of moving declarations to the top of their scope during the compilation phase.  their declaration varriable, function go to memory first in creation phase.That function declaration function full body is go to memory mean function full body is hoisted so we call function anywhere but variable 
+declaration time variable name go to memory not variable value so function expression or Arrow function variable hoisted not function full body hoisted so we can't call function before variable declaration line.
+
 
 =============================================
 📌 QUESTION 4
