@@ -450,12 +450,13 @@ new যা করে:
 Constructor function-এর নাম Capital letter দিয়ে শুরু করা convention.
 Arrow function constructor হিসেবে ব্যবহার করা যায় না কারণ এর নিজস্ব this আর prototype নেই।
 
+
 🎤 Answer in English:
-"A constructor function is a regular JavaScript function intended to be called with the 'new' keyword to create objects.
-When we use 'new', four things happen: a new empty object is created, the prototype of that object is set to the constructor's prototype,
-the constructor function is executed with 'this' pointing to the new object, and unless the function returns its own object, the new object is returned.
-Constructor functions conventionally start with a capital letter. Arrow functions cannot be used as constructors because they lack their own 'this'
-and a prototype property."
+Constructor function is a regular function but function involved time use new keyword so make new object . When we use 'new', four things happen: a new empty object is created, the prototype of that object is set to the constructor's prototype, the constructor function is executed with 'this' pointing to the new object, and unless the function returns its own object, the new object is returned.
+Constructor functions conventionally start with a capital letter. Arrow functions cannot be used as constructors because they lack their own 'this' and a prototype property."
+
+
+
 
 =============================================
 📌 QUESTION 13
@@ -476,8 +477,8 @@ function factorial(n) {
 Use: tree traversal, data structure, mathematical problem, divide-and-conquer।
 
 🎤 Answer in English:
-"Recursion is a technique where a function calls itself to solve smaller instances of the same problem.
-A recursive function must have a base case to stop the chain, otherwise it will cause a stack overflow.
+"Recursion is a technique where a function calls itself .
+A recursive function must have a base case to stop the chain, otherwise it will cause a infinity loop.
 For example, to calculate factorial: function factorial(n) { return n <= 1 ? 1 : n * factorial(n - 1); }
 Recursion is widely used in algorithms like tree traversal, sorting, and when dealing with recursive data structures."
 
