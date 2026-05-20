@@ -188,7 +188,7 @@ const arrowFunc = () => {
 };
 const objTest = { name: 'Test' };
 arrowFunc.bind(objTest)(); // এখনো enclosing scope-র this (global/window/module)
-//? মনে রাখবি: arrow function দিয়ে bind এড়ানো যায়, কিন্তু দরকারে bind করতে চাইলে normal function চাই।
+//?arrow function দিয়ে bind এড়ানো যায়, কিন্তু দরকারে bind করতে চাইলে normal function চাই।
 
 // ================================================================
 // ! SUMMARY TABLE (মুখস্থ করার জন্য)
