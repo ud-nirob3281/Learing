@@ -3,9 +3,13 @@
 //* Definition of Scope:
 // Scope মানে হলো একটা নির্দিষ্ট এলাকা (boundary) যেখান থেকে variable ও function-কে access করা যায়।
 // জাভাস্ক্রিপ্টে scope নির্ধারণ করে দেয়, কোন ভেরিয়েবল কোথায় visible আর কোথায় নয়।
-// মূলত তিন ধরনের scope: Global Scope, Function Scope, Block Scope।
-// Lexical Scope: function যেখানে লেখা হয়, তার parent scope-কে access করতে পারে।
-// এই পুরো ব্যাপারটাকে বলে Scope Chain।
+// মূলত তিন ধরনের scope: Global Scope, Function Scope, Block Scope। and Other scope is module scope and lexical scope 
+// Lexical Scope: function যেখানে লেখা হয়, তার parent scope-কে access করতে পারে। 
+//English Definition:Where a function can access variables is decided by where the function is written in the code, not where it is called.
+
+
+// Module scope: মডিউলার স্কোপ হচ্ছে জাভাস্ক্রিপ্টের আলাদা ফাইলের নিজস্ব একান্ত জায়গা। যখন আমরা ES6 Modules ব্যবহার করি (যেমন export / import), তখন প্রতিটা .js ফাইল নিজেই একটা আলাদা স্কোপ পেয়ে যায়। ওই ফাইলের ভেরিয়েবল, ফাংশন বাইরে থেকে অ্যাক্সেস করা যায় না, যতক্ষণ না তুমি সেটাকে export করো।
+//England Definition:Each JavaScript module (file) has its own private scope; variables and functions are not visible outside unless they are explicitly exported.
 
 //* 1. Global Scope:
 // GEC-এর ভেতরে যেসব variable/function সরাসরি declare হয়, তারা global scope-এর অন্তর্ভুক্ত।
@@ -13,31 +17,12 @@
 // Browser-এ global variable window object-এর property হয়ে যায় (শুধু var এবং function declaration)।
 // let/const দিয়েও global scope তৈরি হয়, কিন্তু তারা window object-এ যোগ হয় না।
 
+//English definition: Variables declared outside any function or block are in the global scope. They can be accessed from anywhere in the code.
+
 var globalVar = 'I am global var'; // window.globalVar
 let globalLet = 'I am global let'; // window-এ নাই
 const globalConst = 'I am global const'; // window-এ নাই
 
-function showGlobal() {
-  console.log(globalVar); // accessible
-  console.log(globalLet); // accessible (lexical scope)
-  console.log(globalConst); // accessible
-}
-showGlobal();
-
-/*
-GEC:
-  Creation Phase:
-    - globalVar: undefined (var hoisting)
-    - globalLet: TDZ (uninitialized)
-    - globalConst: TDZ (uninitialized)
-    - showGlobal: function body store
-
-  Execution Phase:
-    - globalVar = "I am global var"
-    - globalLet = "I am global let"  (TDZ শেষ)
-    - globalConst = "I am global const"
-    - showGlobal() call → FEC তৈরি
-*/
 
 //* 2. Function Scope (Local Scope):
 // Function-এর ভেতরে declare করা variable শুধু সেই function-এর ভেতরে accessible.
@@ -103,94 +88,9 @@ for (var j = 0; j < 3; j++) {
 }
 console.log(j); // 3 (var function-scoped/global, leak করে)
 
-//* 4. Lexical Scope & Scope Chain:
-// জাভাস্ক্রিপ্ট nested function-এর ক্ষেত্রে inner function তার outer function-এর variable access করতে পারে।
-// এটাকে Lexical Scoping বলে: function যেখানে লেখা (defined) হয়েছে, সেই location অনুযায়ী scope নির্ধারিত।
-// Scope chain: inner scope -> parent scope -> global scope (একদম বাইরের window পর্যন্ত)
-// প্রতিটি execution context-এর creation phase-এ [[Scope]] বা outer reference set হয়।
 
-let outerVar = 'Outer';
-function outerFunc() {
-  let innerVar = 'Inner';
-  function innerFunc() {
-    let innermostVar = 'Innermost';
-    console.log(innermostVar); // নিজের
-    console.log(innerVar); // parent থেকে (lexical)
-    console.log(outerVar); // grandparent (global) থেকে (lexical)
-  }
-  innerFunc();
-}
-outerFunc();
 
-/*
-GEC:
-  CP:
-    outerVar: TDZ
-    outerFunc: function body
-    (ignoring other)
-  EP:
-    outerVar = "Outer"
-    outerFunc() call -> outerFunc FEC
-
-outerFunc FEC:
-  CP:
-    innerVar: TDZ
-    innerFunc: function body
-  EP:
-    innerVar = "Inner"
-    innerFunc() call -> innerFunc FEC
-
-innerFunc FEC:
-  CP:
-    innermostVar: TDZ
-    outer reference -> outerFunc FEC (lexical)
-  EP:
-    innermostVar = "Innermost"
-    console.log(innermostVar) -> scope chain: innerFunc -> outerFunc -> GEC
-    innermostVar পায়, innerVar outerFunc-এ আছে, outerVar GEC-এ আছে
-*/
-
-//* 5. Scope & var/let/const hoisting recap:
-// - var: function-scoped বা global-scoped, block scope মানে না, hoisting-এ undefined।
-// - let/const: block-scoped ({}), hoisting-এ TDZ।
-// - function declaration: function-scoped (অথবা global)।
-// - Lexical scope-এর কারণে closure তৈরি হয় (function তার outer variable মনে রাখে)।
-
-// উদাহরণ: var ও let-এর block scope difference
-function scopeTest() {
-  if (true) {
-    var x = 'var x'; // function-scoped (না block-scoped)
-    let y = 'let y'; // block-scoped
-    const z = 'const z'; // block-scoped
-  }
-  console.log(x); // "var x" (access করা যাচ্ছে)
-  // console.log(y); // ReferenceError
-  // console.log(z); // ReferenceError
-}
-scopeTest();
-
-/*
-GEC:
-  CP:
-    scopeTest: f()
-  EP:
-    scopeTest() -> FEC
-
-FEC scopeTest:
-  CP:
-    x: undefined (function-scoped, hoisted)
-    y: TDZ (block-scoped, কিন্তু hoisted)
-    z: TDZ
-  EP:
-    if block execute:
-      x = "var x" (assign)
-      y = "let y" (TDZ শেষ, initialize)
-      z = "const z" (TDZ শেষ, initialize)
-    block শেষ: y, z block-scope-এর বাইরে অ্যাশেবল না, destroy/out of scope
-    x এখনো function scope-এ আছে, তাই accessible
-*/
-
-//* 6. Scope chain বনাম Call Stack:
+//* Scope chain বনাম Call Stack:
 // scope chain: function যেখানে লেখা হয়েছে তার ভিত্তিতে তৈরি হয় (lexical)
 // call stack: function কীভাবে call হয়েছে তার sequence (execution)
 // closure: inner function outer function-এর variable access করে, outer function execute শেষ হবার পরেও (যদি reference থাকে)।
@@ -209,14 +109,6 @@ counter(); // 1
 counter(); // 2
 // count variable টা createCounter-এর execution শেষ হবার পরেও closure হয়ে থাকে।
 
-/*
-GEC:
-  createCounter: f
-  counter: undefined (const, TDZ) -> assign function
-  তারপর counter() -> FEC of returned function
-    returned function-এর [[Scope]]: createCounter FEC (lexical)
-    createCounter FEC Execution শেষ, কিন্তু count variable garbage collected না, কারণ closure reference আছে।
-*/
 
 //! সংক্ষেপে Scope মনে রাখার পয়েন্ট:
 /*
