@@ -18,6 +18,8 @@ Function যখন call হয়, execution context-এ scope chain তৈরি �
 এই retained environment-ই closure.
 */
 
+//English definition: "A closure is a combination of a function bundled with references to its surrounding state (the lexical environment).When an inner function accesses variables from its outer function, and the outer function has finished executing, the inner function still retains access to those variables via closure.
+
 //* 1. Simple Closure Example:
 function outer() {
   let outerVar = 'I am from outer'; // outer function-এর local variable
@@ -33,23 +35,6 @@ const myClosure = outer(); // outer call শেষ, normally outerVar destroy �
 myClosure(); // তারপরও "I am from outer" print করে -> Closure magic!
 
 /*
-Execution Flow:
-GEC:
-  CP:
-    outer: function body
-    myClosure: TDZ (let/const)
-  EP:
-    outer() call -> outer FEC তৈরি
-
-outer FEC:
-  CP:
-    outerVar: TDZ (let)
-    inner: function body store (তার [[Scope]]: outer FEC)
-  EP:
-    outerVar = "I am from outer"
-    return inner -> myClosure receive করে inner function-টা
-    outer FEC execution শেষ, call stack থেকে pop
-
 এখন outer FEC চলে গেছে, কিন্তু inner function-এর [[Scope]] এখনো outer-এর environment-কে reference করে আছে।
 যেহেতু outerVar inner থেকে access করা হয়েছে, GC সেটা ফেলে দেয় না।
 myClosure() call দিলে inner FEC তৈরি হয়, scope chain-এ outerVar খুঁজে পায়।
@@ -73,15 +58,6 @@ myClosure() call দিলে inner FEC তৈরি হয়, scope chain-এ out
 }
 // console.log(count); // ReferenceError (private, এই closure-এর কারণে)
 
-/*
-GEC:
-  createCounter: function body
-  counter: TDZ -> পরে assign
-  counter() -> inner FEC
-    inner-এর [[Scope]] -> createCounter FEC (lexical)
-    createCounter FEC-এর count variable বার বার update হয়, কারণ প্রতিবার একই environment refer করে।
-    createCounter execution শেষ, কিন্তু count memory-তে থেকে যায়।
-*/
 
 //* 3. Multiple Closures & Independent Copies:
 function createCounters() {
@@ -107,7 +83,6 @@ myCounter.decrement();
 console.log(myCounter.getCount()); // 1
 
 // count variable টা increment, decrement, getCount সবার মধ্যে shared closure.
-// এইটা module pattern-এর ভিত্তি (private state)।
 
 //* 4. Closure inside Loop (let vs var - famous pitfall):
 // var দিয়ে loop-এ closure বানালে সমস্যা, কারণ var function-scoped, block-scoped না।
@@ -189,37 +164,7 @@ function outerFunc(outerParam) {
 const innerRef = outerFunc('param');
 innerRef('innerParam'); // output: param outerLet outerConst innerParam innerLet
 
-/*
-GEC:
-  CP: outerFunc, innerRef (TDZ)
-  EP: outerFunc("param") -> outerFunc FEC
 
-outerFunc FEC:
-  CP:
-    outerParam: undefined -> later "param" (parameter memory allocate, then assign in EP)
-    outerLet: TDZ
-    outerConst: TDZ
-    innerFunc: function body ([[Scope]] -> outerFunc FEC)
-  EP:
-    outerParam = "param"
-    outerLet = "outerLet"
-    outerConst = "outerConst"
-    return innerFunc -> innerRef = innerFunc
-
-outerFunc FEC execution শেষ, call stack থেকে remove.
-কিন্তু innerRef এখনো innerFunc-কে hold করে, তার [[Scope]] outerFunc FEC কে reference করে,
-তাই outerParam, outerLet, outerConst এখনো মেমোরিতে আছে।
-
-innerRef("innerParam") -> innerFunc FEC:
-  CP:
-    innerParam: undefined -> later "innerParam"
-    innerLet: TDZ
-    scope chain: innerFunc FEC -> outerFunc FEC (lexical) -> GEC
-  EP:
-    innerParam = "innerParam"
-    innerLet = "innerLet"
-    console.log(...) outerParam, outerLet, outerConst scope chain দিয়ে খুঁজে পায়।
-*/
 
 //! সংক্ষেপে Closure মনে রাখার পয়েন্ট:
 /*
