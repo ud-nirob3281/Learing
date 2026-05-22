@@ -31,6 +31,8 @@ const globalConst = 'I am global const'; // window-এ নাই
 // var, let, const সবই function-scoped (function-এর বাইরে visible না)
 // তবে var function-scoped হলেও block-scoped না (nearest function-এর বাইরে leak করে না, কিন্তু if/for block-এ discount দেয় না)।
 
+//English Definition: Variables declared inside a function (using var) are function-scoped. They can only be accessed within that function, not outside.
+
 function outer() {
   var functionVar = 'Inside outer';
   let functionLet = 'Outer let';
@@ -67,6 +69,8 @@ FEC (outer):
 // {} ব্লকের ভেতরে let/const দিয়ে declare variable শুধু সেই ব্লকের ভেতরে সীমাবদ্ধ।
 // var block scope মানে না, এটি function-scoped বা global-scoped (যেখানে declare হয়েছে)।
 // Block scope: if, else, for, while, switch, এবং standalone {}.
+
+//English Definition: Variables declared with let or const inside a block {} are block-scoped. They exist only within that block (like in an if statement or a loop).
 
 {
   var blockVar = 'var inside block'; // function-scoped/global (window)
