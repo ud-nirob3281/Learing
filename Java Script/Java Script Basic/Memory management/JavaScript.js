@@ -121,32 +121,7 @@ car = null;
 
 */
 
-/* 🧩 Circular Reference আর Mark-and-Sweep-এর জাদু
-
-Reference counting (পুরনো পদ্ধতি) মারাত্মক একটা সমস্যা ছিল: **circular reference**। দুইটা object একে অপরকে reference করে রাখলেও যদি বাইরের কেউ তাদের use না করে, তবুও count শূন্য হয় না → মেমোরি লিক।
-
-কিন্তু Mark-and-Sweep এই সমস্যা একদম ফ্রি করে দেয়, কারণ সে **reachability দেখে, reference count না**।
-*/
-
-function createCircle() {
-  let a = {};
-  let b = {};
-  a.friend = b;
-  b.friend = a;
-  // function শেষ, a আর b নামের local variable আর স্ট্যাক নেই
-  // কিন্তু দুইটা object এখনও loop করে reference ধরে।
-}
-createCircle();
-
 /*
-**এখন:**
-- function কল শেষ, call stack থেকে `a`, `b` নামের local root চলে গেছে।
-- এখন global root বা অন্য কোনো root থেকে কি ওই object-গুলো খুঁজে পাওয়া যাবে? না।
-- সুতরাং GC তাদের mark করবে না → sweep হয়ে যাবে। মেমোরি clean!
-
-যদি reference counting থাকত, তাহলে count কখনো 0 হতো না, তাই মেমোরিতে থেকে যেত = leak.
-
-
 ### ✅ মনে রাখার পয়েন্ট
 
 - **Mark Phase:** Roots থেকে start করে সব reachable object-এ "mark" করা।
@@ -198,7 +173,7 @@ let button = document.getElementById('myButton');
 // কিন্তু button variable এখনো reference ধরে রেখেছে, তাই button object এবং তার সাথে থাকা DOM element heap-এ রয়ে যাবে, GC হবে না।
 button = null; // solution: reference null
 
-// 5.5
+// 5.4
 /*
   parent element-এ click listener যুক্ত করি, যা child element-কে DOM থেকে সরিয়ে দেয়।
   কিন্তু listener function তার closure-এ child variable-কে reference ধরে রেখেছে।
@@ -244,8 +219,6 @@ function createHeavyFunction() {
 let heavy = createHeavyFunction();
 // heavy = null; // করলে largeData-ও sweep হবে
 
-// 5.5 Unremoved Event Listeners (SPA তে বড় issue)
-// যদি element remove করি কিন্তু event listener remove না করি, listener-এর closure parent scope ধরে রাখে।
 
 //* 6. WeakMap & WeakSet (GC-Friendly Data Structures)
 /*
