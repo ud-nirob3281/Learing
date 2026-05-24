@@ -1,571 +1,279 @@
-//! Create Arrays
-//Way-1
+//! JavaScript Arrays
+
+/*
+Array হলো ordered collection of elements (any data type).
+Array reference type, heap-এ store. Index 0 থেকে শুরু.
+Array-র নিজস্ব methods ও properties (length) আছে।
+Array.isArray() দিয়ে check করতে হয় (typeof [] → "object")
+*/
+
+//* 1. Array Creation (অ্যারে তৈরি)
+// Way-1: Array literal
 const language = ['HTML', 'CSS', 'JavaScript', 'Java', 'Python', true, 'Rust'];
 
-//Way-2
-const language2 = new Array(
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'Java',
-  'Python',
-  true,
-  'Rust'
-);
-//console.log(language);
-//console.log(language2);
-//console.log(language === language2);
+// Way-2: new Array() constructor
+const language2 = new Array('HTML', 'CSS', 'JavaScript', 'Java', 'Python', true, 'Rust');
+console.log(language === language2); // false (different references)
 
-//* Empty Array Make
-const emteyArray = new Array(5);
-//console.log(emteyArray);
+// Empty array with fixed length
+const emptyArray = new Array(5);
+console.log(emptyArray); // [ <5 empty slots> ]
 
-//* Array Access
-//console.log(language); //? Full Arrays Output
-//console.log(language[2]); //? Single Element Output
+// Way-3: Array.of() – এক বা একাধিক element দিয়ে array বানায়
+const arrOf = Array.of(2, true, 'nirob', { age: 17 }, [1, 2, 3]);
 
-//* Value Change/Update
-//console.log(language[6]); //? Old
-language[6] = 'C'; //? Update
-//console.log(language[6]); //? New
+// Way-4: Array.from() – array-like বা iterable থেকে array
+const arrLike = { 0: 'UD', 1: 'UG', 2: 'UDN', length: 3 };
+const fromArr = Array.from(arrLike); // ['UD', 'UG', 'UDN']
 
-//! Array Method
-//* Chek Array
-/* console.log(Array.isArray([0, 'apple', true]));
-console.log(Array.isArray('apple'));
-console.log(Array.isArray({ name: 'UD', age: 5 }));
-console.log(Array.isArray([])); */
+// Array.fromAsync() – async iterable থেকে promise resolve করে
+const asyncArr = Array.fromAsync(arrLike); // Promise
 
-//* Full Array Value Show in String
-//console.log(language.toString());
-//console.log(language.join(' $')); //? ,(Comma)Alternative Use
+//* 2. Access & Update
+console.log(language[2]);               // 'JavaScript'
+language[6] = 'C';                     // update
+console.log(language[6]);              // 'C'
 
-//* Use of length Property
-//console.log(language.length); //?How many Element are there in the Array
-//console.log(language[language.length - 1]); //? Last Item Access
+// length property (element count)
+console.log(language.length);          // 7
+console.log(language[language.length - 1]); // last element
 
-//* Add / Remove
-language.push('red'); //? Add Last Item
-language.pop(); //? Remove Last Item
-language.unshift('C'); //? Add First Item
-language.shift(); //? Remove First Item*/
-//console.log(language);
+//* 3. Check if Array
+console.log(Array.isArray([1, 2]));     // true
+console.log(Array.isArray('apple'));    // false
+console.log(Array.isArray({}));         // false
 
-//!Array Destructuring
+//* 4. Convert to String
+console.log(language.toString());      // "HTML,CSS,JavaScript,Java,Python,true,C"
+console.log(language.join(' | '));     // custom separator
+
+//* 5. Add / Remove Elements (mutable)
+// push/pop – end
+language.push('Rust');                 // add last
+language.pop();                        // remove last
+// unshift/shift – start
+language.unshift('C');                 // add first
+language.shift();                      // remove first
+
+//* 6. Destructuring
 const salad = ['🍅', '🍄', '🥦', '🥒', '🌽', '🥕', '🥑'];
 
-//*Normal Wat
-const tomato1 = salad[0];
-const mushroom1 = salad[1];
-const carrot1 = salad[5];
-///console.log(tomato1, mushroom1, carrot1);
+// Basic
+const [tomato, mushroom, carrot] = salad;
+console.log(tomato, mushroom, carrot);  // 🍅 🍄 🥕
 
-//*Destructured Way
-const [tomato, mushroom, carrot] = [
-  salad[0],
-  salad[1],
-  salad[5],
-]; /*['🍅', '🍄', '🥕'];*/
-//console.log(tomato, mushroom, carrot);
+// Default value
+const [a = '🍎', b = '🍌'] = ['🍇'];
+console.log(a, b); // 🍇 🍌
 
-//*Deafault Value
-const [copi, sosa = '🥒'] = ['🥦'];
-//console.log(copi, sosa);
+// Skip values
+const [, , third] = ['a', 'b', 'c'];
+console.log(third); // 'c'
 
-//* Skip one Value
-const [tomato2, , carrot2] = ['🍅', '🍄', '🥕']; //skip mushrom
-//console.log(tomato2, carrot2);
-
-//*Swiping Varroiable
-let first = '😒';
-let second = '😊';
-
+// Swapping
+let first = '😒', second = '😊';
 [first, second] = [second, first];
-//console.log(first);
-//console.log(second);
+console.log(first, second); // 😊 😒
 
-//* Merge Varriable
+// Merge arrays with spread
 let emotion = ['😊', '😒'];
-let veg = ['🍅', '🍄', '🥦', '🥒', '🌽'];
+let veg = ['🍅', '🍄'];
+const merged = [...emotion, ...veg];
+console.log(merged);
 
-const merge = [...emotion, ...veg];
-//console.log(merge);
+// Rest in destructuring
+const [firstItem, secondItem, ...restItems] = salad;
+console.log(restItems); // ['🥦', '🥒', '🌽', '🥕', '🥑']
 
-//! Rest and Spread
-//*Rest
-const [tomato3, mushroom3, carrot3, ...res] = [
-  '🍅',
-  '🍄',
-  '🥦',
-  '🥒',
-  '🌽',
-  '🥕',
-  '🥑',
-];
-//console.log(res);
+//* 7. Spread & Rest (Spread = copy/merge, Rest = gather)
+// Spread for shallow copy
+const copySalad = [...salad];
+console.log(copySalad === salad); // false
+// Spread in function arguments
+console.log(Math.max(...[1, 5, 3])); // 5
 
-//*Spread
-const newSa = ['🍅', '🍄', '🥦', '🥒', '🌽', '🥕', '🥑'];
-const copy = [newSa];
-//console.log(newSa === copy);
-const copy1 = { ...newSa };
-//console.log(copy1);
+//* 8. Combine Arrays
+const x = [1,2,3], y = [4,5,6], z = [7,8,9];
+const combined = x.concat(y, z);
+console.log(combined);               // [1,2,3,4,5,6,7,8,9]
 
-//! Combind Array
-const x = [1, 2, 3, 4];
-const y = [1, 3, 5, 7];
-const z = [2, 4, 6, 8];
+// Using spread (more common)
+const combined2 = [...x, ...y, ...z];
 
-const p = x.concat(y, z);
-//console.log(p);
+//* 9. fill() – নির্দিষ্ট value দিয়ে পূর্ণ করা
+let arrFill = ['🥦', '🥒', '🌽', '🥕', '🥑'];
+// Mutable
+arrFill.fill(0);                     // সব 0
+arrFill.fill('🌽', 1, 4);           // index 1-3 পর্যন্ত 🌽
+// Immutable (spread করে তারপর fill)
+const immutableFill = [...arrFill].fill(5);
+// Array(5).fill('A').join('-') → "A-A-A-A-A"
 
-//! Fill()
-//Muteable way
-//*এটা দিয়ে আমরা একটা array এর সব এলিমেন্টকে নির্দিষ্ট ভ্যালু দিয়ে পূরণ করতে পারি।
+//* 10. Searching Elements
+// includes() – value exists?
+const dev = ['FULL', 'MERN', 'MEAN', 'LARAVEL'];
+console.log(dev.includes('MERN'));  // true
 
-let array = ['🥦', '🥒', '🌽', '🥕', '🥑'];
-//array.fill(0); //? array.fill(value) → সব এলিমেন্টকে একই value দিয়ে পূরণ করবে
-//console.log(array); //? Output: [0, 0, 0, 0, 0]
+// indexOf / lastIndexOf
+console.log(dev.indexOf('MERN'));         // 1
+console.log(dev.lastIndexOf('MERN'));     // 4 (if duplicate)
+console.log(dev.indexOf('xyz'));          // -1
 
-array.fill('🌽', 1, 4); //?array.fill(value, start, end)
-//console.log(array);
+// find / findLast / findIndex / findLastIndex (callback)
+const numbers = [10, 20, 30, 40];
+const found = numbers.find(num => num > 25);     // 30
+const foundLast = numbers.findLast(num => num > 25); // 40
+const foundIndex = numbers.findIndex(num => num > 25); // 2
 
-//console.log(Array(5).fill('A').join('-')); //? Fill and Join use
+// some() – অন্তত একটা? every() – সব?
+console.log(numbers.some(num => num > 35)); // true
+console.log(numbers.every(num => num > 5)); // true
 
-//Immuteable way
-const arra = [1, 2, 3, 4, 5, 6];
-const newArra = [...arra].fill(0);
-//console.log(newArra);
-//console.log(arra);
-
-//! Includes()
-const developer = ['FULL', 'MERN', 'MEAN', 'LARAVEL', 'MERN'];
-//console.log(developer.includes('MERN'));
-//console.log(developer.includes('njkh'));
-
-//! IndexOf()/LastIndexOf()
-/* console.log(developer.indexOf('MERN')); //1
-console.log(developer.indexOf('dfg')); //-1
-console.log(developer.indexOf('gerh')); //-1
-
-console.log(developer.lastIndexOf('MERN')); //4
-console.log(developer.lastIndexOf('dfg')); //-1
-console.log(developer.lastIndexOf('gerh')); //-1 */
-
-//! Reverse()
-//Muteable
-/* let rev = developer.reverse();
-console.log(rev);
-console.log(developer); */
-
-//! toReverse()
-//Immuteable
-const toRev = developer.toReversed();
-/* console.log(toRev);
-console.log(developer); */
-
-//! Sort()
-//Muteable
-// The default sort() method converts the element types into strings
-//  The default sorting order is ascending.
-const alphabet1 = ['z', 'c', 'l', 'a', 'x', 'a', 's'];
-const sort = alphabet1.sort(); //? Assending Order
-//console.log(sort);
-//console.log(alphabet);
-
-const artists = [
-  'John White Abbott',
-  'Leonardo da Vinci',
-  'Charles Aubry',
-  'Anna Atkins',
-  'Barent Avercamp',
-];
-//console.log(artists.sort());
-
-//*Custom Sorting
-alphabet1.sort(function (a, b) {
-  //Way-1
-  return a === b ? 0 : a > b ? -1 : 1; //? 0 Mean No Change , -1 Mean Desending Order , 1 Mean Element UP -> Down
-  //Way-2
-  artists.sort(function (a, b) {
-    if (a === b) {
-      return 0; // No change if both are equal
-    } else if (a > b) {
-      return -1; // a comes after b (descending order)
-    } else {
-      return 1; // b comes after a (ascending order)
-    }
-  });
+//* 11. Sorting
+// sort() – mutable, default string order
+const letters = ['z', 'c', 'l', 'a', 'x'];
+letters.sort(); // ascending string
+console.log(letters);
+// Custom compare function
+letters.sort((a, b) => {
+  // ascending: a-b for numbers, for strings: return a.localeCompare(b)
+  // descending: b-a or reverse
+  if (a > b) return -1; // descending
+  if (a < b) return 1;
+  return 0;
 });
-//console.log(alphabet);
+// toSorted() – immutable
+const sortedCopy = letters.toSorted((a,b) => a.localeCompare(b));
 
-//!toSorted
-//Immuteable
-const alphabet = ['z', 'c', 'l', 'a', 'x', 'a', 's'];
-const toSort = alphabet.toSorted();
-const sort1 = alphabet.toSorted(() => 0.5);
-const sort2 = alphabet.toSorted(() => -0.5);
-const sort3 = alphabet.toSorted(() => 0);
-/* console.log(toSort);
-console.log(sort1);
-console.log(sort2);
-console.log(sort3); */
-//console.log(alphabet);
+//* 12. Reversing
+// reverse() – mutable
+// toReversed() – immutable
+const revImmutable = dev.toReversed();
 
-//! Splice()
-//Muteable
-//splice(start, deleteCount, item1, item2, item3...);
-let languages = ['HTML', 'CSS', 'JavaScript', 'Java', 'Python', true, 'Rust'];
-//languages.splice(0, 1);
-//languages.splice(3, 2, 'React');
-//languages.splice(2, 0, 'React');
-//console.log(languages);
+//* 13. slice, splice, with
+// slice(start, end) – immutable, extract
+const fruits = ['Apple','Banana','Cherry','Date'];
+console.log(fruits.slice(1,3)); // ['Banana','Cherry']
+const copy = fruits.slice(); // full copy
 
-//!toSliced()
-//Immuteable
-const toSli = languages.toSpliced(1, 1, 'React.JS');
-//console.log(toSli);
-//console.log(languages);
+// splice(start, deleteCount, ...items) – mutable, modify original
+fruits.splice(1, 2, 'Blueberry'); // remove index 1-2, insert 'Blueberry'
+console.log(fruits); // ['Apple','Blueberry','Date']
 
-//! Slice()
-const copyArr = languages.slice(); // Array কে Copy করতে চাইলে
-//console.log(copyArr);
-//console.log(languages === copyArr);
-//console.log(languages.slice(2, 5)); //Array কে ছোট করতে চাইলে
+// toSpliced() – immutable version
+const newFruits = fruits.toSpliced(0, 1, 'Mango');
 
-//! Grouping
+// with(index, value) – immutable single element update
+const updatedFruits = fruits.with(1, 'Strawberry');
+
+//* 14. at() – negative index allows
+const junk = ['🥖','🍔','🍟','🍕'];
+console.log(junk.at(-1)); // '🍕'
+
+//* 15. flat & flatMap
+const nested = [1, [2, [3, [4]]]];
+console.log(nested.flat(2));     // [1,2,3,[4]]
+console.log(nested.flat(Infinity)); // [1,2,3,4]
+// flatMap = map + flat(1)
+const arr3 = [1,2,3];
+console.log(arr3.flatMap(x => [x, x*2])); // [1,2, 2,4, 3,6]
+
+//* 16. copyWithin(target, start, end) – mutable
+const arrCopy = [1,2,3,4,5,6,7];
+arrCopy.copyWithin(0, 3, 6); // copy index 3-5 to index 0
+console.log(arrCopy); // [4,5,6,4,5,6,7]
+
+//* 17. split() (String method, array পেতে)
+let names = 'UD NIROB';
+let nameArr = names.split(' '); // ['UD','NIROB']
+
+//* 18. Object.groupBy() – ES2024
 const employees = [
   { name: 'Bob', dept: 'Engineering', salary: 5000 },
   { name: 'Alex', dept: 'HR', salary: 1000 },
   { name: 'Ravi', dept: 'Engineering', salary: 7000 },
-  { name: 'John', dept: 'Engineering', salary: 1000 },
-  { name: 'Tom', dept: 'Sales', salary: 6000 },
 ];
-const groupData = Object.groupBy(employees, ({ dept }) => dept);
-//console.log(groupData);
+const groupByDept = Object.groupBy(employees, ({ dept }) => dept);
+console.log(groupByDept);
 
-const groupBymore5000usd = Object.groupBy(employees, ({ salary }) => {
-  return salary >= 5000 ? 'More than 5K' : 'Less than 5K';
-});
-console.log(groupBymore5000usd);
-
-//!With()
-//with(index,value)
-const number = [1, 2, 3, 4, 5, 6, 7];
-// TODO /if i need update value 4 to 6 so
-//number[3] = 6;
-//console.log(number);
-//TODO /But problem is a This Array is muted. But I need Update value but Immuteable way so
-const newArray = number.with(3, 6);
-//console.log(newArray);
-//console.log(number);
-
-//! at()
-const junkFoodILove = ['🥖', '🍔', '🍟', '🍕', '🌭', '🥪', '🌮', '🍿'];
-
-junkFoodILove.at(0); // '🥖'
-junkFoodILove.at(3); // '🍕'
-junkFoodILove.at(-1); // '🍿'
-junkFoodILove.at(-5); // '🍕'
-junkFoodILove.at(-8); // '🥖'
-junkFoodILove.at(10); // undefined
-
-//! Flat()
-const arr1 = [0, 1, 2, [3, 4]];
-//console.log(arr1.flat());
-
-const arr2 = [0, 1, [2, [3, [4, 5]]]];
-/* console.log(arr2.flat(2));
-console.log(arr2.flat(3));
-console.log(arr2.flat(Infinity)); */
-
-//! CopyWithin()
-const array0 = [1, 2, 3, 4, 5, 6, 7];
-array0.copyWithin(0, 3, 6);
-//console.log(array0);
-
-const array1 = [1, 2, 3, 4, 5, 6, 7];
-array1.copyWithin(0, 4);
-//console.log(array1);
-
-//! Split()
-let names = 'UD NIROB';
-let arr = names.split('');
-//console.log(arr);
-
-//! All Static Methood
-//*Array like
-const arrlike = { 0: 'UD', 1: 'UG', 2: 'UDN', length: 3 };
-//console.log(arrlike);
-//console.log(arrlike[1]);
-
-//?Array like Conveert original array
-const originalArray = Array.from(arrlike);
-//console.log(originalArray);
-
-//* fromAsync()
-const originalPromise = Array.fromAsync(arrlike);
-//console.log(originalPromise);
-
-//originalPromise.then(value => console.log(value));
-
-//* Of()
-const newArr = Array.of(2, true, 'nirob', { age: 17 }, [1, 2, 3]);
-//console.log(newArr);
-
-//! Array itarator Methood
-//* Filter()
-const syntaxFilter = array.filter((element, index, array) => {
-  // Some Code
-});
-
-let customers = [
-  {
-    id: 1,
-    f_name: 'Abby',
-    l_name: 'Thomas',
-    gender: 'M',
-    married: true,
-    age: 32,
-    expense: 500,
-    purchased: ['Shampoo', 'Toys', 'Book'],
-  },
-  {
-    id: 2,
-    f_name: 'Jerry',
-    l_name: 'Tom',
-    gender: 'M',
-    married: true,
-    age: 64,
-    expense: 100,
-    purchased: ['Stick', 'Blade'],
-  },
-  {
-    id: 3,
-    f_name: 'Dianna',
-    l_name: 'Cherry',
-    gender: 'F',
-    married: true,
-    age: 22,
-    expense: 1500,
-    purchased: ['Lipstik', 'Nail Polish', 'Bag', 'Book'],
-  },
-  {
-    id: 4,
-    f_name: 'Dev',
-    l_name: 'Currian',
-    gender: 'M',
-    married: true,
-    age: 8,
-    expense: 90,
-    purchased: ['Book'],
-  },
-  {
-    id: 5,
-    f_name: 'Maria',
-    l_name: 'Gomes',
-    gender: 'F',
-    married: false,
-    age: 7,
-    expense: 300,
-    purchased: ['Toys'],
-  },
-];
-//? filter() - Get 'Senior Citizens' by Filtering out other customers
-
-const seniorCus = customers.filter(customer => {
-  return customer.age >= 60;
-});
-//console.log(seniorCus);
-
-//* Map()
-// map() - Transform to add title and full name
-
-const afterArray = customers.map(customer => {
-  let title = '';
-  if (customer.gender === 'M') {
-    title = 'Mr.';
-  } else if (customer.gender === 'F' && customer.married) {
-    title = 'Mst.';
-  } else {
-    title = 'Miss.';
-  }
-  customer.fullName = `${title} ${customer.f_name} ${customer.l_name}`;
-  return customer;
-});
-//console.log(afterArray);
-
-//* Reduce
-// A reducer function which is also called as callback function to be called on each element of the array.
-//Syntax
-/* const ret = arr.reduce((accumulator, currentValue, index, array)=> {
-    // do something with accumulator and currentvalue
-    // You get a result
-    // You return that result
-}) */
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const myTotal = numbers.reduce((acc, curr) => {
-  // console.log(curr);
-  //console.log(`Accmulator ${acc} and Current Value ${curr}`);
-  acc = acc + curr;
-  return acc;
-}, 0);
-//console.log(myTotal);
-
-// reduce() - The average age of the Customers who have purchased the Item, 'Book'.
-let count = 0;
-const total = customers.reduce((acc, customer) => {
-  if (customer.purchased.includes('Book')) {
-    totalAge = acc + customer.age;
-    count = count + 1;
-  }
-  return totalAge;
-}, 0);
-const average = total / count;
-//console.log(average);
-
-//* RedudceRight()
-//Left -> Right
-const num = numbers.reduceRight((acc, num) => {
-  return acc - num;
-});
-//Right -> Left
-const num1 = numbers.reduce((acc, num) => {
-  return acc - num;
-});
-//console.log(num);
-//console.log(num1);
-
-//*some()
-// some() - Do we have a Young Customer(age less than 10 years)?
-
-const hasYoungCustomer = customers.some(customer => {
-  return customer.age < 10;
-});
-
-//console.log('Has Young Customer(Age < 10):', hasYoungCustomer);
-
-//* every
-// every() - Every Customer is Married?
-
-const isAllMarried = customers.every(customer => {
-  return customer.married;
-});
-
-//console.log('All Customer Married?:', isAllMarried);
-
-//*Find
-const youngCustomer = customers.find(customer => {
-  return customer.age < 10;
-});
-//console.log(youngCustomer);
-
-//*FindLast
-const youngCustomer0 = customers.findLast(customer => {
-  return customer.age < 10;
-});
-//console.log(youngCustomer0);
-
-//* FindIndex
-const youngCustomer1 = customers.findIndex(customer => {
-  return customer.age < 10;
-});
-//console.log(youngCustomer1);
-
-//! Array Methood Chaining
-// Use Case: Get the total amount spent by Married Customers
-
-// reduce()
-// map()
-// filter()
-
-// Find all the married customers
-//? Way-1
-/* const marridCustomar = customers.filter(marrid => {
-  return marrid.married;
-});
-console.log(marridCustomar);
-
-const totalExpance = marridCustomar.reduce((acc, total) => {
-  tot = total.expense;
-  return acc + tot;
-}, 0);
-console.log(totalExpance); */
-//? Way-2
-/* const marridCustomar = customers.filter(marrid => {
-  return marrid.married;
-});
-console.log(marridCustomar);
-
-const expence = marridCustomar.map(ex => {
-  return ex.expense;
-});
-console.log(expence);
-
-const totalExpance = expence.reduce((acc, total) => {
-  return acc + total;
-}, 0);
-console.log(totalExpance); */
-//? Chaining
-const totals = customers
-  .filter(marrid => {
-    return marrid.married;
-  })
-  .map(ex => {
-    return ex.expense;
-  })
-  .reduce((acc, total) => {
-    return acc + total;
-  }, 0);
-//console.log(totals);
-
-//*fromEntries()
-const numArr = [
-  ['a', 1],
-  ['b', 2],
-  ['c', 3],
-];
-//Array - Obj
-//console.log(Object.fromEntries(numArr));
-
-// entries()
-const arrItr = arr.entries();
-/*console.log("Array Iterator", arrItr.next().value) // [0, 1]
-console.log("Array Iterator", arrItr.next().value) // [1, 2]*/
-
-for (const [index, element] of arrItr) {
-  //console.log(index, element);
-}
-
-// values()
-
-const arrItr2 = arr.values();
-
-for (const value of arrItr2) {
-  //console.log(value);
-}
-
-// flatMap()
-
-const arr3 = [1, 2, 3, 4];
-
-/* console.log(
-  'simple map',
-  arr3.map(item => item * 2)
-);
-console.log(
-  'simple flatmap',
-  arr3.flatMap(item => item * 2)
+// Custom group
+const bySalary = Object.groupBy(employees, ({ salary }) =>
+  salary >= 5000 ? 'High' : 'Low'
 );
 
-console.log(
-  'complex map',
-  arr3.map(item => [item * 2])
-); //[[2], [4], [6],..]
-console.log(
-  'complex flat map',
-  arr3.flatMap(item => [item * 2])
-); */
+//* 19. Iterator Methods (forEach, filter, map, reduce, reduceRight)
+
+// forEach – প্রতিটি element-এ কাজ
+const colors = ['red','green','blue'];
+colors.forEach((color, index) => console.log(index, color));
+
+// filter – শর্তসাপেক্ষে element রাখা
+const customers = [
+  { id:1, age:32, married:true, expense:500, purchased:['Book'] },
+  { id:2, age:8, married:false, expense:90, purchased:['Toy'] },
+  // ...
+];
+const seniorCitizens = customers.filter(c => c.age >= 60);
+
+// map – প্রতিটি element transform
+const fullNames = customers.map(c => {
+  const title = c.gender === 'M' ? 'Mr.' : c.married ? 'Mst.' : 'Miss.';
+  return `${title} ${c.f_name} ${c.l_name}`;
+});
+
+// reduce – single value accumulate
+const totalExpense = customers.reduce((sum, c) => sum + c.expense, 0);
+
+// reduceRight – ডান থেকে বামে
+const diff = [10, 2, 1].reduceRight((acc, val) => acc - val); // (1-2) = -1, then 10-(-1)=11
+console.log(diff);
+
+//* 20. Advanced array features
+// entries() – [index, value] iterator
+const iterator = ['a','b'].entries();
+for (const [i, v] of iterator) console.log(i, v);
+
+// keys() – index iterator
+// values() – value iterator
+const vals = ['x','y'].values();
+for (const v of vals) console.log(v);
+
+// fromEntries() – array of [key,value] to object
+const objFromArr = Object.fromEntries([['a',1],['b',2]]);
+console.log(objFromArr); // {a:1, b:2}
+
+// Method Chaining (example)
+const totalMarriedExpense = customers
+  .filter(c => c.married)
+  .map(c => c.expense)
+  .reduce((a, b) => a + b, 0);
+
+//* 21. Shallow Copy vs Deep Copy (reference types-এর জন্য সাবধান)
+const nestedArr = [{ id: 1 }, { id: 2 }];
+const shallowCopy = [...nestedArr];
+shallowCopy[0].id = 99;
+console.log(nestedArr[0].id); // 99 (affected!)
+
+// Deep copy option: structuredClone / JSON
+const deepCopy = structuredClone(nestedArr);
+deepCopy[0].id = 100;
+console.log(nestedArr[0].id); // 99 (unaffected)
+
+//! Summary of key methods
+/*
+| Category        | Methods                                   |
+|-----------------|-------------------------------------------|
+| Add/Remove      | push, pop, unshift, shift, splice         |
+| Search          | includes, indexOf, lastIndexOf, find, findIndex |
+| Test all/some   | every, some                               |
+| Transform       | map, filter, reduce, reduceRight, flatMap |
+| Iterate         | forEach, entries, keys, values            |
+| Copy/Fill       | slice, fill, copyWithin, with, spread     |
+| Sort/Reverse    | sort, toSorted, reverse, toReversed       |
+| Flatten         | flat, flatMap                             |
+| Static          | Array.isArray, Array.of, Array.from       |
+| New             | Object.groupBy, toSpliced, with, at       |
+*/
 
 //! Task
 {
