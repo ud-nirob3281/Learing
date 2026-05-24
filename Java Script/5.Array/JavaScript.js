@@ -29,7 +29,7 @@ const fromArr = Array.from(arrLike); // ['UD', 'UG', 'UDN']
 // Array.fromAsync() – async iterable থেকে promise resolve করে
 const asyncArr = Array.fromAsync(arrLike); // Promise
 
-//* 2. Access & Update
+//! 2. Access & Update
 console.log(language[2]);               // 'JavaScript'
 language[6] = 'C';                     // update
 console.log(language[6]);              // 'C'
@@ -38,16 +38,16 @@ console.log(language[6]);              // 'C'
 console.log(language.length);          // 7
 console.log(language[language.length - 1]); // last element
 
-//* 3. Check if Array
+//! 3. Check if Array
 console.log(Array.isArray([1, 2]));     // true
 console.log(Array.isArray('apple'));    // false
 console.log(Array.isArray({}));         // false
 
-//* 4. Convert to String
+//! 4. Convert to String
 console.log(language.toString());      // "HTML,CSS,JavaScript,Java,Python,true,C"
 console.log(language.join(' | '));     // custom separator
 
-//* 5. Add / Remove Elements (mutable)
+//! 5. Add / Remove Elements (mutable)
 // push/pop – end
 language.push('Rust');                 // add last
 language.pop();                        // remove last
@@ -55,7 +55,7 @@ language.pop();                        // remove last
 language.unshift('C');                 // add first
 language.shift();                      // remove first
 
-//* 6. Destructuring
+//! 6. Destructuring
 const salad = ['🍅', '🍄', '🥦', '🥒', '🌽', '🥕', '🥑'];
 
 // Basic
@@ -85,14 +85,14 @@ console.log(merged);
 const [firstItem, secondItem, ...restItems] = salad;
 console.log(restItems); // ['🥦', '🥒', '🌽', '🥕', '🥑']
 
-//* 7. Spread & Rest (Spread = copy/merge, Rest = gather)
+//! 7. Spread & Rest (Spread = copy/merge, Rest = gather)
 // Spread for shallow copy
 const copySalad = [...salad];
 console.log(copySalad === salad); // false
 // Spread in function arguments
 console.log(Math.max(...[1, 5, 3])); // 5
 
-//* 8. Combine Arrays
+//! 8. Combine Arrays
 const x = [1,2,3], y = [4,5,6], z = [7,8,9];
 const combined = x.concat(y, z);
 console.log(combined);               // [1,2,3,4,5,6,7,8,9]
@@ -100,90 +100,428 @@ console.log(combined);               // [1,2,3,4,5,6,7,8,9]
 // Using spread (more common)
 const combined2 = [...x, ...y, ...z];
 
-//* 9. fill() – নির্দিষ্ট value দিয়ে পূর্ণ করা
-let arrFill = ['🥦', '🥒', '🌽', '🥕', '🥑'];
-// Mutable
-arrFill.fill(0);                     // সব 0
-arrFill.fill('🌽', 1, 4);           // index 1-3 পর্যন্ত 🌽
-// Immutable (spread করে তারপর fill)
-const immutableFill = [...arrFill].fill(5);
-// Array(5).fill('A').join('-') → "A-A-A-A-A"
 
-//* 10. Searching Elements
-// includes() – value exists?
-const dev = ['FULL', 'MERN', 'MEAN', 'LARAVEL'];
-console.log(dev.includes('MERN'));  // true
+//! 9. Fill() - এটা দিয়ে আমরা একটা array এর সব এলিমেন্টকে নির্দিষ্ট ভ্যালু দিয়ে পূরণ করতে পারি।
 
-// indexOf / lastIndexOf
-console.log(dev.indexOf('MERN'));         // 1
-console.log(dev.lastIndexOf('MERN'));     // 4 (if duplicate)
-console.log(dev.indexOf('xyz'));          // -1
+//Muteable way
+let array = ['🥦', '🥒', '🌽', '🥕', '🥑'];
+//array.fill(0); //? array.fill(value) → সব এলিমেন্টকে একই value দিয়ে পূরণ করবে
+//console.log(array); //? Output: [0, 0, 0, 0, 0]
 
-// find / findLast / findIndex / findLastIndex (callback)
-const numbers = [10, 20, 30, 40];
-const found = numbers.find(num => num > 25);     // 30
-const foundLast = numbers.findLast(num => num > 25); // 40
-const foundIndex = numbers.findIndex(num => num > 25); // 2
+array.fill('🌽', 1, 4); //?array.fill(value, start, end)
+//console.log(array);
 
-// some() – অন্তত একটা? every() – সব?
-console.log(numbers.some(num => num > 35)); // true
-console.log(numbers.every(num => num > 5)); // true
+//console.log(Array(5).fill('A').join('-')); //? Fill and Join use
 
-//* 11. Sorting
-// sort() – mutable, default string order
-const letters = ['z', 'c', 'l', 'a', 'x'];
-letters.sort(); // ascending string
-console.log(letters);
-// Custom compare function
-letters.sort((a, b) => {
-  // ascending: a-b for numbers, for strings: return a.localeCompare(b)
-  // descending: b-a or reverse
-  if (a > b) return -1; // descending
-  if (a < b) return 1;
-  return 0;
+//Immuteable way
+const arra = [1, 2, 3, 4, 5, 6];
+const newArra = [...arra].fill(0);
+//console.log(newArra);
+//console.log(arra)
+
+
+let customers = [
+  {
+    id: 1,
+    f_name: 'Abby',
+    l_name: 'Thomas',
+    gender: 'M',
+    married: true,
+    age: 32,
+    expense: 500,
+    purchased: ['Shampoo', 'Toys', 'Book'],
+  },
+  {
+    id: 2,
+    f_name: 'Jerry',
+    l_name: 'Tom',
+    gender: 'M',
+    married: true,
+    age: 64,
+    expense: 100,
+    purchased: ['Stick', 'Blade'],
+  },
+  {
+    id: 3,
+    f_name: 'Dianna',
+    l_name: 'Cherry',
+    gender: 'F',
+    married: true,
+    age: 22,
+    expense: 1500,
+    purchased: ['Lipstik', 'Nail Polish', 'Bag', 'Book'],
+  },
+  {
+    id: 4,
+    f_name: 'Dev',
+    l_name: 'Currian',
+    gender: 'M',
+    married: true,
+    age: 8,
+    expense: 90,
+    purchased: ['Book'],
+  },
+  {
+    id: 5,
+    f_name: 'Maria',
+    l_name: 'Gomes',
+    gender: 'F',
+    married: false,
+    age: 7,
+    expense: 300,
+    purchased: ['Toys'],
+  },
+];
+
+//! 10. Array itarator Methood
+
+//* forEach – প্রতিটি element-এ কাজ
+const colors = ['red','green','blue'];
+colors.forEach((color, index) => console.log(index, color));
+
+
+//* Filter()
+const syntaxFilter = array.filter((element, index, array) => {
+  // Some Code
 });
-// toSorted() – immutable
-const sortedCopy = letters.toSorted((a,b) => a.localeCompare(b));
+//? filter() - Get 'Senior Citizens' by Filtering out other customers
 
-//* 12. Reversing
-// reverse() – mutable
-// toReversed() – immutable
-const revImmutable = dev.toReversed();
+const seniorCus = customers.filter(customer => {
+  return customer.age >= 60;
+});
+//console.log(seniorCus);
 
-//* 13. slice, splice, with
-// slice(start, end) – immutable, extract
+//* Map()
+// map() - Transform to add title and full name
+
+const afterArray = customers.map(customer => {
+  let title = '';
+  if (customer.gender === 'M') {
+    title = 'Mr.';
+  } else if (customer.gender === 'F' && customer.married) {
+    title = 'Mst.';
+  } else {
+    title = 'Miss.';
+  }
+  customer.fullName = `${title} ${customer.f_name} ${customer.l_name}`;
+  return customer;
+});
+//console.log(afterArray);
+
+//* Reduce
+// A reducer function which is also called as callback function to be called on each element of the array.
+//Syntax
+/* const ret = arr.reduce((accumulator, currentValue, index, array)=> {
+    // do something with accumulator and currentvalue
+    // You get a result
+    // You return that result
+}) */
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const myTotal = numbers.reduce((acc, curr) => {
+  // console.log(curr);
+  //console.log(`Accmulator ${acc} and Current Value ${curr}`);
+  acc = acc + curr;
+  return acc;
+}, 0);
+//console.log(myTotal);
+
+// reduce() - The average age of the Customers who have purchased the Item, 'Book'.
+let count = 0;
+const total = customers.reduce((acc, customer) => {
+  if (customer.purchased.includes('Book')) {
+    totalAge = acc + customer.age;
+    count = count + 1;
+  }
+  return totalAge;
+}, 0);
+const average = total / count;
+//console.log(average);
+
+//* RedudceRight()
+//Left -> Right
+const num = numbers.reduceRight((acc, num) => {
+  return acc - num;
+});
+//Right -> Left
+const num1 = numbers.reduce((acc, num) => {
+  return acc - num;
+});
+//console.log(num);
+//console.log(num1);
+
+//*some() - পরীক্ষা করে কোনো একটি উপাদান শর্ত পূরণ করলে true রিটার্ন করে, নাহলে false।
+// some() - Do we have a Young Customer(age less than 10 years)?
+
+const hasYoungCustomer = customers.some(customer => {
+  return customer.age < 10;
+});
+
+//console.log('Has Young Customer(Age < 10):', hasYoungCustomer);
+
+//* every - পরীক্ষা করে সব উপাদান শর্ত পূরণ করলে true রিটার্ন করে, নাহলে false।
+// every() - Every Customer is Married?
+
+const isAllMarried = customers.every(customer => {
+  return customer.married;
+});
+
+//console.log('All Customer Married?:', isAllMarried);
+
+//*Find - শর্ত পূরণ করা প্রথম উপাদানটি রিটার্ন করে। না পেলে undefined।
+const youngCustomer = customers.find(customer => {
+  return customer.age < 10;
+});
+//console.log(youngCustomer);
+
+//*FindLast - শর্ত পূরণ করা শেষ উপাদানটি রিটার্ন করে। না পেলে undefined।
+const youngCustomer0 = customers.findLast(customer => {
+  return customer.age < 10;
+});
+//console.log(youngCustomer0);
+
+//* FindIndex - শর্ত পূরণ করা প্রথম উপাদানের ইনডেক্স রিটার্ন করে। না পেলে -1।
+const youngCustomer1 = customers.findIndex(customer => {
+  return customer.age < 10;
+});
+//console.log(youngCustomer1);
+
+
+//! 11. Includes()
+const developer = ['FULL', 'MERN', 'MEAN', 'LARAVEL', 'MERN'];
+//console.log(developer.includes('MERN'));
+//console.log(developer.includes('njkh'));
+
+//! 12. IndexOf()/LastIndexOf()
+/* console.log(developer.indexOf('MERN')); //1
+console.log(developer.indexOf('dfg')); //-1
+console.log(developer.indexOf('gerh')); //-1
+
+console.log(developer.lastIndexOf('MERN')); //4
+console.log(developer.lastIndexOf('dfg')); //-1
+console.log(developer.lastIndexOf('gerh')); //-1 */
+
+//! 13. Reverse()/toReverse()
+//* Reverse()
+//Muteable
+/* let rev = developer.reverse();
+console.log(rev);
+console.log(developer); */
+
+//* toReverse()
+//Immuteable
+const toRev = developer.toReversed();
+/* console.log(toRev);
+console.log(developer); */
+
+
+
+//! 14. Sorting
+
+// sort() method array-র elements গুলোকে sort করে
+// এটা MUTABLE - মানে মূল array-কে চেঞ্জ করে ফেলে
+// Default ভাবে ascending order এ sort করে
+// Default ভাবে সব elements-কে STRING হিসেবে sort করে
+
+
+//* 🧠 COMPARE FUNCTION (The Heart of Sorting)
+
+// Compare function-এর rules:
+// compareFunction(a, b) return:
+//   Negative Value (< 0)  →  a আগে বসবে, b পরে
+//   Positive Value (> 0)  →  b আগে বসবে, a পরে
+//   Zero (0)              →  কোনো চেঞ্জ নেই
+
+// Visual Representation:
+// a - b = Negative  →  a, b  (a আগে, b পরে) = Ascending
+// a - b = Positive  →  b, a  (b আগে, a পরে) = Descending
+// a - b = 0         →  a, b  (যেমন আছে তেমন)
+
+
+
+//* 🔢 NUMBER SORTING
+
+// sort() সবকিছুকে STRING হিসেবে sort করে
+// তাই সংখ্যা sort করতে গেলে সমস্যা হয়
+
+const numbers = [1, 100, 25, 40, 5];
+numbers.sort(); // Default sort (string comparison)
+console.log(numbers); // [1, 100, 25, 40, 5] ❌ WRONG!
+
+// কেন ভুল হয়?
+// "1" < "100" < "25" < "40" < "5" (Unicode string order)
+// String comparison: "100" আসে "25" এর আগে কারণ '1' < '2'
+
+
+
+const nums = [40, 100, 1, 5, 25, 10];
+
+// ASCENDING (ছোট থেকে বড়) - Short Way
+nums.sort((a, b) => a - b);
+console.log(nums); // [1, 5, 10, 25, 40, 100] ✅
+
+// ASCENDING (ছোট থেকে বড়) - Long Way (Step by Step)
+nums.sort(function(a, b) {
+  if (a < b) return -1;  // a ছোট, a আগে বসবে
+  if (a > b) return 1;   // a বড়, b আগে বসবে (a পরে যাবে)
+  return 0;              // সমান, কোনো চেঞ্জ নেই
+  //return a === b ? 0 : a > b ? 1 : -1
+});
+
+// DESCENDING (বড় থেকে ছোট) - Short Way
+nums.sort((a, b) => b - a);
+console.log(nums); // [100, 40, 25, 10, 5, 1] ✅
+
+// DESCENDING (বড় থেকে ছোট) - Long Way
+nums.sort(function(a, b) {
+  if (a > b) return -1;  // a বড়, a আগে বসবে
+  if (a < b) return 1;   // a ছোট, b আগে বসবে (a পরে যাবে)
+  return 0;              // সমান, কোনো চেঞ্জ নেই
+  // return a === b ? 0 : a > b ? -1 : 1
+});
+
+
+
+//*  🔤 STRING SORTING
+
+const names = ['John', 'alice', 'Bob', 'charlie'];
+
+// Case-sensitive (Default) - A-Z তারপর a-z (ASCII order)
+names.sort();
+console.log(names); // ['Bob', 'John', 'alice', 'charlie']
+
+
+// Case-insensitive (বড়-ছোট হাতের অক্ষর ইগনোর)
+names.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+console.log(names); // ['alice', 'Bob', 'charlie', 'John'] ✅
+
+// Z-A (Descending)
+names.sort((a, b) => b.localeCompare(a));
+console.log(names); // ['John', 'charlie', 'Bob', 'alice']
+
+// বাংলা স্ট্রিং সর্টিং
+const banglaWords = ['কলা', 'আম', 'জাম', 'লিচু'];
+banglaWords.sort((a, b) => a.localeCompare(b, 'bn-BD'));
+console.log(banglaWords); // ['আম', 'কলা', 'জাম', 'লিচু'] ✅
+
+
+//* 📅 DATE SORTING
+
+const dates = [
+  new Date('2023-03-15'),
+  new Date('2021-06-20'),
+  new Date('2024-01-10')
+];
+
+// Ascending (পুরনো → নতুন)
+dates.sort((a, b) => a - b);
+console.log(dates);
+// [2021-06-20, 2023-03-15, 2024-01-10]
+
+// Descending (নতুন → পুরনো)
+dates.sort((a, b) => b - a);
+console.log(dates);
+// [2024-01-10, 2023-03-15, 2021-06-20]
+
+
+
+//* 🆕 toSorted() - IMMUTABLE SORT (ES2023)
+
+
+// toSorted() নতুন array return করে, মূল array চেঞ্জ হয় না
+// toSorted() ও compare function accept করে
+
+const original = [3, 1, 4, 1, 5];
+
+// Without compare function (Default string sort)
+const sortedDefault = original.toSorted();
+console.log(original);      // [3, 1, 4, 1, 5] - unchanged ✅
+console.log(sortedDefault); // [1, 1, 3, 4, 5] - new array
+
+// With compare function (Number sort)
+const sortedAsc = original.toSorted((a, b) => a - b);
+console.log(sortedAsc); // [1, 1, 3, 4, 5]
+
+const sortedDesc = original.toSorted((a, b) => b - a);
+console.log(sortedDesc); // [5, 4, 3, 1, 1]
+
+/*
+1. Default sort = STRING sort (Unicode order)
+2. Number sort-এর জন্য compare function (a - b) আবশ্যক
+3. sort() MUTABLE - মূল array চেঞ্জ করে ফেলে
+4. Immutable চাইলে toSorted() বা [...arr].sort() ব্যবহার করো
+5. Compare function: Negative = a আগে, Positive = b আগে, Zero = চেঞ্জ নেই
+6. Objects-এর ক্ষেত্রে নির্দিষ্ট property দিয়ে compare করতে হয়
+7. বাংলা সর্টিং-এর জন্য localeCompare() ব্যবহার করো
+8. toSorted() ES2023 (নতুন) - সব ব্রাউজারে সাপোর্ট নাও থাকতে পারে
+*/
+
+
+
+//! 15. slice, splice, with
+
+//* slice(start, end) – immutable, extract
 const fruits = ['Apple','Banana','Cherry','Date'];
 console.log(fruits.slice(1,3)); // ['Banana','Cherry']
 const copy = fruits.slice(); // full copy
 
-// splice(start, deleteCount, ...items) – mutable, modify original
-fruits.splice(1, 2, 'Blueberry'); // remove index 1-2, insert 'Blueberry'
-console.log(fruits); // ['Apple','Blueberry','Date']
+//* Splice()
+//Muteable
+//splice(start, deleteCount, item1, item2, item3...);
+let languages = ['HTML', 'CSS', 'JavaScript', 'Java', 'Python', true, 'Rust'];
+//languages.splice(0, 1);
+//languages.splice(3, 2, 'React');
+//languages.splice(2, 0, 'React');
+//console.log(languages);
 
-// toSpliced() – immutable version
-const newFruits = fruits.toSpliced(0, 1, 'Mango');
+//*toSpliced()
+//Immuteable
+const toSli = languages.toSpliced(1, 1, 'React.JS');
+//console.log(toSli);
+//console.log(languages);
 
-// with(index, value) – immutable single element update
-const updatedFruits = fruits.with(1, 'Strawberry');
 
-//* 14. at() – negative index allows
-const junk = ['🥖','🍔','🍟','🍕'];
-console.log(junk.at(-1)); // '🍕'
+//*With()
+//with(index,value)
+const number = [1, 2, 3, 4, 5, 6, 7];
+//? if i need update value 4 to 6 so
+//number[3] = 6;
+//console.log(number);
+//? But problem is a This Array is muted. But I need Update value but Immuteable way so
+const newArray = number.with(3, 6);
+//console.log(newArray);
+//console.log(number);
 
-//* 15. flat & flatMap
-const nested = [1, [2, [3, [4]]]];
-console.log(nested.flat(2));     // [1,2,3,[4]]
-console.log(nested.flat(Infinity)); // [1,2,3,4]
+//! 16. at() – negative index allows
+
+const junkFoodILove = ['🥖', '🍔', '🍟', '🍕', '🌭', '🥪', '🌮', '🍿'];
+
+junkFoodILove.at(0); // '🥖'
+junkFoodILove.at(3); // '🍕'
+junkFoodILove.at(-1); // '🍿'
+junkFoodILove.at(-5); // '🍕'
+junkFoodILove.at(-8); // '🥖'
+junkFoodILove.at(10); // undefined
+
+//! 17. Flat()
+
+const arr2 = [0, 1, [2, [3, [4, 5]]]];
+/* console.log(arr2.flat(2));
+console.log(arr2.flat(3));
+console.log(arr2.flat(Infinity)); */
+
+/* ! 18. flatMap - প্রথমে প্রতিটি উপাদানের উপর ম্যাপ করে (বদলায়), তারপর ফলাফলকে এক লেভেল ফ্ল্যাট করে।
+এটি আলাদা করে map() ও flat() করার মতোই, কিন্তু বেশি কার্যকরী।*/
+
 // flatMap = map + flat(1)
 const arr3 = [1,2,3];
 console.log(arr3.flatMap(x => [x, x*2])); // [1,2, 2,4, 3,6]
 
-//* 16. copyWithin(target, start, end) – mutable
+//! 19. copyWithin(target, start, end) – mutable
 const arrCopy = [1,2,3,4,5,6,7];
 arrCopy.copyWithin(0, 3, 6); // copy index 3-5 to index 0
 console.log(arrCopy); // [4,5,6,4,5,6,7]
 
-//* 17. split() (String method, array পেতে)
+//! 20. split() (String method, array পেতে)
 let names = 'UD NIROB';
 let nameArr = names.split(' '); // ['UD','NIROB']
 
