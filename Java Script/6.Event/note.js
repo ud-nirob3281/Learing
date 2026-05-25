@@ -321,12 +321,27 @@ document.getElementById("formContainer").addEventListener("focusin", function() 
 
 
 // --- Document/Window Events ---
+/*
+DOMContentLoaded কবে fire হয়?
+- ব্রাউজার যখন পুরো HTML file parse করে DOM tree তৈরি শেষ করে ফেলে।
+- কিন্তু এই সময় CSS files, images, subframes ইত্যাদি load নাও হতে পারে।
+- অর্থাৎ, DOM (HTML structure) ready, JavaScript দিয়ে safely manipulate করা যায়।
 
-// DOMContentLoaded: HTML parse হওয়া শেষ, DOM ready (css, image না)
+সংক্ষেপে: "DOM ready, JavaScript চালানোর জন্য প্রস্তুত।"
+
+এটা document-এ fire হয়, window-এ নয়।
+*/
+
+// ব্যবহার করার নিয়ম:
 document.addEventListener("DOMContentLoaded", function() {
-  console.log("DOM fully loaded, safe to manipulate");
-  // init app
+  console.log("DOM fully parsed! নিরাপদে element access করতে পারবে।");
+  // এখন getElementById, querySelector ইত্যাদি কাজ করবে।
 });
+
+// কেন দরকার?
+// যদি <head> বা body-র একদম শুরুতে script লিখ এবং সেখানে DOM access করতে চাও,
+// তখন বেশিরভাগ element এখনো তৈরি হয়নি, তাই null পাবে।
+// DOMContentLoaded-র ভেতর লিখলে গ্যারান্টি পাবে যে DOM tree-র সব element ready।
 
 // load: সব resource (images, styles) load হয়ে গেলে
 window.addEventListener("load", function() {
