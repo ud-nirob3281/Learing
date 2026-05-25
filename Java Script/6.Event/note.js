@@ -575,20 +575,121 @@ document.addEventListener("pointermove", function(e) {
 
 
 // --- Media Events ---
-const video = document.getElementById("myVideo");
-video.addEventListener("play", () => console.log("Video playing"));
-video.addEventListener("pause", () => console.log("Video paused"));
-video.addEventListener("ended", () => console.log("Video ended"));
-// ... timeupdate, volumechange etc.
+//! প্রতিটি Media Event-এর ছোট উদাহরণ (Bangla+English)
 
-// --- Clipboard Events ---
-document.addEventListener("copy", (e) => {
-  console.log("Content copied");
-});
-document.addEventListener("paste", (e) => {
-  const pastedText = e.clipboardData.getData("text/plain");
-  console.log("Pasted:", pastedText);
+// নিচে <video id="myVideo" src="sample.mp4"> ধরে প্রতিটি event-এর ছোট example দেওয়া হলো।
+
+const video = document.getElementById('myVideo');
+
+// 1. loadedmetadata – ভিডিওর duration, width, height জানা গেলে
+video.addEventListener('loadedmetadata', () => {
+  console.log('Duration:', video.duration); // e.g., 120.5 sec
 });
 
-  
-  
+// 2. canplay – ব্রাউজার কিছুটা buffer করতে পেরেছে, play শুরু করা যাবে
+video.addEventListener('canplay', () => {
+  console.log('Can play now');
+});
+
+// 3. canplaythrough – পুরো ভিডিও buffer হওয়ার সম্ভাবনা, smooth play আশা করা যায়
+video.addEventListener('canplaythrough', () => {
+  console.log('Can play through without buffering');
+});
+
+// 4. play – playback শুরু হলে
+video.addEventListener('play', () => {
+  console.log('Video is playing');
+});
+
+// 5. pause – playback pause হলে
+video.addEventListener('pause', () => {
+  console.log('Video is paused');
+});
+
+// 6. ended – ভিডিও শেষ হলে
+video.addEventListener('ended', () => {
+  console.log('Video ended');
+});
+
+// 7. timeupdate – currentTime change (প্রায় প্রতি 250ms)
+video.addEventListener('timeupdate', () => {
+  console.log('Current time:', video.currentTime);
+});
+
+// 8. volumechange – volume বা muted property change হলে
+video.addEventListener('volumechange', () => {
+  console.log('Volume:', video.volume, 'Muted:', video.muted);
+});
+
+// 9. seeking – user seek করতে শুরু করলে (e.g., progress bar drag)
+video.addEventListener('seeking', () => {
+  console.log('Seeking started');
+});
+
+// 10. seeked – seek সম্পন্ন হলে
+video.addEventListener('seeked', () => {
+  console.log('Seek completed');
+});
+
+// 11. waiting – buffer empty হয়ে playback থেমে গেলে (buffering)
+video.addEventListener('waiting', () => {
+  console.log('Buffering...');
+});
+
+// 12. playing – waiting শেষে আবার play শুরু হলে
+video.addEventListener('playing', () => {
+  console.log('Resumed playing after buffering');
+});
+
+// 13. loadstart – media data load শুরু
+video.addEventListener('loadstart', () => {
+  console.log('Started loading video');
+});
+
+// 14. progress – data download হওয়ার সময় periodically fire
+video.addEventListener('progress', () => {
+  if (video.buffered.length > 0) {
+    const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+    console.log('Buffered up to:', bufferedEnd, 'sec');
+  }
+});
+
+// 15. error – কোনো কারণে ভিডিও load/play না হতে পারলে
+video.addEventListener('error', () => {
+  console.error('Video error:', video.error.code, video.error.message);
+});
+
+// 16. ratechange – playbackRate change (e.g., 1.5x speed)
+video.addEventListener('ratechange', () => {
+  console.log('Playback rate changed to:', video.playbackRate);
+});
+
+// 17. abort – media load বাতিল হলে (e.g., page leave)
+video.addEventListener('abort', () => {
+  console.log('Media loading aborted');
+});
+
+// 18. emptied – src change বা load reset হলে (e.g., video.src = '')
+video.addEventListener('emptied', () => {
+  console.log('Media emptied');
+});
+
+// 19. stalled – network সমস্যায় data আসা বন্ধ হলে
+video.addEventListener('stalled', () => {
+  console.log('Network stalled');
+});
+
+// 20. suspend – media data intentionally not fully fetched (e.g., preload="none")
+video.addEventListener('suspend', () => {
+  console.log('Data loading suspended');
+});
+
+// 21. durationchange – duration property change হলে
+video.addEventListener('durationchange', () => {
+  console.log('Duration changed:', video.duration);
+});
+
+// 22. resize – video element-এর size change (very rare)
+video.addEventListener('resize', () => {
+  console.log('Video element resized');
+});
