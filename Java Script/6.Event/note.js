@@ -216,6 +216,159 @@ abortController.abort(); // সব listener remove
 - একই element-এ একই ইভেন্টের একাধিক listener avoid করো (stopImmediate যেখানে দরকার)
 */
 
+  //* ========================
+//* Custom Event (নিজস্ব ইভেন্ট তৈরি)
+//* ========================
+/*
+কেন দরকার?
+- যখন built-in ইভেন্ট দিয়ে প্রকাশ করা যায় না এমন কিছু ঘটলে signal পাঠাতে চাই।
+- Component-to-component communication (loose coupling) সহজ হয়।
+- State change, UI update, custom action track করা।
+- Large apps-এ Redux/Context-এর আগে lightweight pub/sub হিসেবেও কাজ করে।
+
+মূল বিষয়:
+  - new CustomEvent(eventName, options) দিয়ে ইভেন্ট তৈরি
+  - dispatchEvent(element) দিয়ে trigger
+  - detail property এর মাধ্যমে data পাঠানো
+  - bubbles: true দিলে parent-এ ওঠে (bubbling)
+  - cancelable: true দিলে preventDefault() করা যায়
+*/
+
+// উদাহরণ 1: Custom event তৈরি, dispatch, ও listen
+// একটা custom ইভেন্ট "userLoggedIn" তৈরি করি, সাথে user data পাঠাই
+const loginEvent = new CustomEvent("userLoggedIn", {
+  detail: {
+    username: "Nirob",
+    email: "nirob@example.com",
+    loginTime: Date.now()
+  },
+  bubbles: true,    // document পর্যন্ত bubble করবে
+  cancelable: false // preventDefault() অকার্যকর
+});
+
+// dispatch on document (or any element)
+document.dispatchEvent(loginEvent);
+
+// listener
+document.addEventListener("userLoggedIn", function(e) {
+  console.log("User logged in:", e.detail.username, e.detail.email);
+  // UI update, API call, etc.
+});
+
+// উদাহরণ 2: UI component এর ভেতর থেকে parent-কে notify
+// একটা modal component imagine করি
+const modal = document.getElementById("myModal");
+const closeBtn = document.getElementById("closeModalBtn");
+
+closeBtn.addEventListener("click", function() {
+  // modal close হলে "modalClosed" event fire
+  const closedEvent = new CustomEvent("modalClosed", {
+    detail: { modalId: "myModal" },
+    bubbles: true
+  });
+  modal.dispatchEvent(closedEvent);
+});
+
+// parent component listen
+document.addEventListener("modalClosed", function(e) {
+  console.log(`Modal ${e.detail.modalId} closed`);
+  // overlay remove, body class remove ইত্যাদি
+});
+
+// উদাহরণ 3: Validation event – form field-এ custom valid/invalid
+const emailInput = document.getElementById("email");
+emailInput.addEventListener("blur", function(e) {
+  const isValid = e.target.value.includes("@");
+  // custom ইভেন্ট fire করি
+  const validEvent = new CustomEvent("emailValidated", {
+    detail: { field: "email", valid: isValid },
+    bubbles: true
+  });
+  e.target.dispatchEvent(validEvent);
+});
+
+// ব্যবহার: error message দেখানো
+document.addEventListener("emailValidated", function(e) {
+  if (!e.detail.valid) {
+    console.log("Email invalid!");
+  }
+});
+
+// উদাহরণ 4: Timer শেষে custom event
+function countdown(seconds) {
+  let remaining = seconds;
+  const timer = setInterval(() => {
+    remaining--;
+    if (remaining === 0) {
+      clearInterval(timer);
+      const endEvent = new CustomEvent("countdownFinished", {
+        detail: { totalSeconds: seconds }
+      });
+      document.dispatchEvent(endEvent);
+    }
+  }, 1000);
+}
+document.addEventListener("countdownFinished", (e) => {
+  console.log("Countdown finished after", e.detail.totalSeconds, "seconds");
+});
+countdown(3);
+
+
+
+
+  
+
+//* ========================
+//* ২. Script loading: normal, async, defer
+//* ========================
+
+/*
+HTML parser যখন কোনো <script> tag দেখে (বিনা async/defer), তখন সেটা সাথে সাথে download করে,
+execute করে, এবং যতক্ষণ শেষ না হয় ততক্ষণ HTML parsing বন্ধ রাখে (block করে)।
+এটা খারাপ, কারণ page slow হয় এবং DOMContentLoaded দেরিতে fire হয়।
+
+async এবং defer attribute ব্যবহার করলে script download asynchronous হয় (HTML parsing block করে না),
+কিন্তু execute করার সময় ভিন্ন।
+*/
+
+// --- 2.1 Normal <script> (default) ---
+// <script src="script.js"></script>
+// আচরণ:
+//   - HTML parsing থামিয়ে script download করে এবং execute করে।
+//   - তারপর আবার parsing resume করে।
+//   - DOMContentLoaded তখনই fire হবে যখন parsing শেষ হবে, মানে script block করলে দেরি হয়।
+//   - Execution order: script যেই ক্রমে HTML-এ আছে, সেই ক্রমে execute হবে (কারণ synchronous)।
+
+// --- 2.2 async attribute ---
+// <script src="script.js" async></script>
+// আচরণ:
+//   - HTML parsing চলতে থাকে, script parallel download হতে থাকে।
+//   - Download শেষ হওয়া মাত্র parsing থামিয়ে সাথে সাথে execute করে ফেলে।
+//   - তারপর আবার parsing resume করে।
+//   - একাধিক async script থাকলে order maintain করে না — যেটা আগে download শেষ হবে সেটা আগে execute হবে।
+//   - DOMContentLoaded: async script execute করা হয়ে গেলে fire হবে,
+//     অথবা async script execute হওয়া আগে parsing শেষ হয়ে গেলে DOMContentLoaded আগেও fire হতে পারে।
+//     অর্থাৎ async script DOMContentLoaded-কে block করতে পারে যদি execute parsing-এর মাঝে হয়।
+//   - ব্যবহার: independent script যেমন analytics, ads, counter (যাদের DOM বা অন্য script-এর দরকার নেই)।
+
+// --- 2.3 defer attribute ---
+// <script src="script.js" defer></script>
+// আচরণ:
+//   - HTML parsing চলতে থাকে, script parallel download হয়।
+//   - Download শেষ হওয়া সত্ত্বেও সাথে সাথে execute করে না।
+//   - Execute করে **HTML parsing সম্পূর্ণ শেষে**, DOMContentLoaded fire-এর ঠিক আগে।
+//   - একাধিক defer script থাকলে তারা HTML-তে যেই ক্রমে আছে সেই ক্রমেই execute হবে (in order)।
+//   - DOMContentLoaded: defer scripts সব execute হয়ে যাওয়ার পর fire হয়।
+//     তাই defer script-এ সরাসরি DOM element access করা যায়, DOMContentLoaded listener দরকার পড়ে না।
+//   - ব্যবহার: যেসব script পুরো DOM-এর উপর নির্ভরশীল বা অন্যান্য defer script-এর সাথে order দরকার।
+
+// Visual Timeline (সংক্ষেপে):
+/*
+Type      Download          Execution         Block parsing?
+normal    synchronous       immediately       yes
+async     parallel          as soon as done   yes (during exec)
+defer     parallel          after parsing     no (exec after parsing)
+*/
 
 //* ========================
 //* 3. Common Event Types & তাদের ব্যবহার ক্ষেত্র (Use Cases) with Examples
@@ -439,100 +592,3 @@ document.addEventListener("paste", (e) => {
 
   
   
-//* ========================
-//* Custom Event (নিজস্ব ইভেন্ট তৈরি)
-//* ========================
-/*
-কেন দরকার?
-- যখন built-in ইভেন্ট দিয়ে প্রকাশ করা যায় না এমন কিছু ঘটলে signal পাঠাতে চাই।
-- Component-to-component communication (loose coupling) সহজ হয়।
-- State change, UI update, custom action track করা।
-- Large apps-এ Redux/Context-এর আগে lightweight pub/sub হিসেবেও কাজ করে।
-
-মূল বিষয়:
-  - new CustomEvent(eventName, options) দিয়ে ইভেন্ট তৈরি
-  - dispatchEvent(element) দিয়ে trigger
-  - detail property এর মাধ্যমে data পাঠানো
-  - bubbles: true দিলে parent-এ ওঠে (bubbling)
-  - cancelable: true দিলে preventDefault() করা যায়
-*/
-
-// উদাহরণ 1: Custom event তৈরি, dispatch, ও listen
-// একটা custom ইভেন্ট "userLoggedIn" তৈরি করি, সাথে user data পাঠাই
-const loginEvent = new CustomEvent("userLoggedIn", {
-  detail: {
-    username: "Nirob",
-    email: "nirob@example.com",
-    loginTime: Date.now()
-  },
-  bubbles: true,    // document পর্যন্ত bubble করবে
-  cancelable: false // preventDefault() অকার্যকর
-});
-
-// dispatch on document (or any element)
-document.dispatchEvent(loginEvent);
-
-// listener
-document.addEventListener("userLoggedIn", function(e) {
-  console.log("User logged in:", e.detail.username, e.detail.email);
-  // UI update, API call, etc.
-});
-
-// উদাহরণ 2: UI component এর ভেতর থেকে parent-কে notify
-// একটা modal component imagine করি
-const modal = document.getElementById("myModal");
-const closeBtn = document.getElementById("closeModalBtn");
-
-closeBtn.addEventListener("click", function() {
-  // modal close হলে "modalClosed" event fire
-  const closedEvent = new CustomEvent("modalClosed", {
-    detail: { modalId: "myModal" },
-    bubbles: true
-  });
-  modal.dispatchEvent(closedEvent);
-});
-
-// parent component listen
-document.addEventListener("modalClosed", function(e) {
-  console.log(`Modal ${e.detail.modalId} closed`);
-  // overlay remove, body class remove ইত্যাদি
-});
-
-// উদাহরণ 3: Validation event – form field-এ custom valid/invalid
-const emailInput = document.getElementById("email");
-emailInput.addEventListener("blur", function(e) {
-  const isValid = e.target.value.includes("@");
-  // custom ইভেন্ট fire করি
-  const validEvent = new CustomEvent("emailValidated", {
-    detail: { field: "email", valid: isValid },
-    bubbles: true
-  });
-  e.target.dispatchEvent(validEvent);
-});
-
-// ব্যবহার: error message দেখানো
-document.addEventListener("emailValidated", function(e) {
-  if (!e.detail.valid) {
-    console.log("Email invalid!");
-  }
-});
-
-// উদাহরণ 4: Timer শেষে custom event
-function countdown(seconds) {
-  let remaining = seconds;
-  const timer = setInterval(() => {
-    remaining--;
-    if (remaining === 0) {
-      clearInterval(timer);
-      const endEvent = new CustomEvent("countdownFinished", {
-        detail: { totalSeconds: seconds }
-      });
-      document.dispatchEvent(endEvent);
-    }
-  }, 1000);
-}
-document.addEventListener("countdownFinished", (e) => {
-  console.log("Countdown finished after", e.detail.totalSeconds, "seconds");
-});
-countdown(3);
-    
