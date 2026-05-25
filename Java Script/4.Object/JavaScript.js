@@ -1,6 +1,4 @@
-
-
-//! JavaScript Objects (বাংলা+English Note)
+//! JavaScript Objects 
 
 /*
 Object হলো key-value pair-এর collection. Property key: string বা Symbol.
@@ -8,8 +6,8 @@ Value: যেকোনো data type (primitive, array, function, nested object).
 Object হলো reference type, heap-এ store হয়।
 */
 
-//* 1. Object Creation (অবজেক্ট তৈরি)
-// 1.1 Object Literal (সবচেয়ে বেশি ব্যবহার)
+//! 1. Object Creation (অবজেক্ট তৈরি)
+//* 1.1 Object Literal (সবচেয়ে বেশি ব্যবহার)
 const mobilModel = {
   name: 'Samsung',                        // key: string
   model: 'S22 Ultra',
@@ -30,7 +28,7 @@ const mobilModel = {
   },
 };
 
-// 1.2 Constructor Function (new keyword)
+//* 1.2 Constructor Function (new keyword)
 // NOTE: Constructor function-এর নামের প্রথম অক্ষর uppercase লিখা convention
 function Person(first, last, age) {
   this.firstName = first;
@@ -41,7 +39,7 @@ function Person(first, last, age) {
 const person0 = new Person('UD', 'NIROB', 17);
 const person1 = new Person('MST.SARA', 'AKTAR', 23);
 
-// 1.3 Factory Function (plain object return)
+//* 1.3 Factory Function (plain object return)
 function createUser(name, age) {
   return {
     yourname: name,
@@ -50,12 +48,12 @@ function createUser(name, age) {
 }
 const user1 = createUser('NIROB', 17);
 
-// 1.4 Object.create() (prototype set করে)
+//* 1.4 Object.create() (prototype set করে)
 const base = { type: 'smartphone' };
 const myPhone = Object.create(base);
 myPhone.brand = 'Xiaomi'; // own property, prototype = base
 
-//* 2. Symbols as Object Keys
+//! 2. Symbols as Object Keys
 const newSymbol = Symbol('Key1');
 const symbolObj = {
   [newSymbol]: 'My Secret Key',  // computed property
@@ -65,7 +63,7 @@ console.log(symbolObj[newSymbol]); // 'My Secret Key'
 // Symbol key শুধুমাত্র bracket notation দিয়ে access করা যায়
 // Object.keys() বা for...in Symbol key দেখায় না (hidden)
 
-//* 3. Property Access (মান বের করা)
+//! 3. Property Access (মান বের করা)
 // Dot notation (সরল key-র জন্য)
 console.log(mobilModel.Prossasor);          // 'Snapdragon Gen-4'
 
@@ -79,7 +77,7 @@ console.log(mobilModel.brandModel());       // ফাংশন execute
 // Nested object access
 console.log(mobilModel.battery.mah);        // 5000
 
-//* 4. Property Add, Update, Delete
+//! 4. Property Add, Update, Delete
 // Add new property
 mobilModel.warranty = '2 years';            // dot
 mobilModel['color'] = 'Phantom Black';      // bracket
@@ -91,8 +89,8 @@ mobilModel.camera[0] = '108MP';             // nested array update
 // Delete
 delete mobilModel.hasZoomCamara;
 
-//* 5. Object Immutability (Freeze & Seal)
-// 5.1 Object.freeze()
+//! 5. Object Immutability (Freeze & Seal)
+//* 5.1 Object.freeze()
 // freeze করলে object পুরোপুরি immutable: add, update, delete কোনোটাই কাজ করে না
 const frozenObj = { name: 'Samsung' };
 Object.freeze(frozenObj);
@@ -102,7 +100,7 @@ frozenObj.newProp = 'test';    // কাজ করবে না
 console.log(frozenObj.name);   // 'Samsung' (অপরিবর্তিত)
 console.log(Object.isFrozen(frozenObj)); // true
 
-// 5.2 Object.seal()
+//* 5.2 Object.seal()
 // seal করলে existing property update করা যায়, কিন্তু add/delete করা যায় না
 const sealedObj = { name: 'UD NIROB' };
 Object.seal(sealedObj);
@@ -112,12 +110,12 @@ sealedObj.age = 17;             // ❌ fail
 console.log(sealedObj.name);    // 'SAFA'
 console.log(Object.isSealed(sealedObj)); // true
 
-//* 6. Property Existence Check (কোনো key আছে কিনা)
+//! 6. Property Existence Check (কোনো key আছে কিনা)
 console.log(mobilModel.hasOwnProperty('camera'));   // true (own property)
 console.log('camera' in mobilModel);                // true (prototype chain-ও check)
 console.log(Object.hasOwn(mobilModel, 'camera'));   // true (ES2022, safer)
 
-//* 7. Object থেকে Array-তে Convert (Keys/Values/Entries)
+//! 7. Object থেকে Array-তে Convert (Keys/Values/Entries)
 const myObj = { name: 'UD NIROB', age: 17 };
 
 console.log(Object.keys(myObj));      // ['name', 'age']
@@ -127,7 +125,7 @@ console.log(Object.entries(myObj));   // [['name','UD NIROB'], ['age',17]]
 // Reflect.ownKeys(obj) — all keys including Symbols
 console.log(Reflect.ownKeys(mobilModel)); // ['name','model',..., Symbol(Key1)]
 
-//* 8. Looping over Object (Iteration)
+//! 8. Looping over Object (Iteration)
 // for...in loop (own + inherited enumerable properties)
 for (let key in mobilModel) {
   if (mobilModel.hasOwnProperty(key)) {
@@ -140,7 +138,7 @@ Object.keys(mobilModel).forEach(key => {
   console.log(key, mobilModel[key]);
 });
 
-//* 9. Dynamic Keys (Computed Property Names)
+//! 9. Dynamic Keys (Computed Property Names)
 let flower = 'rose'; // prompt('What is your fav flower?') থেকে আসলে
 let dyObj = {
   [flower]: 'Sunflower', // variable এর মান key হবে
@@ -153,7 +151,7 @@ function addProperty(obj, key, value) {
 }
 const updated = addProperty({ a: 1 }, 'b', 2);
 
-//* 10. Object Merging (Spread & Object.assign)
+//! 10. Object Merging (Spread & Object.assign)
 const baseInfo = { brand: 'Samsung', year: 2023 };
 const extraInfo = { model: 'S23', color: 'Black' };
 
@@ -165,13 +163,14 @@ console.log(merged1);
 const merged2 = Object.assign({}, baseInfo, extraInfo);
 console.log(merged2);
 
-//* 11. Shallow Copy vs Deep Copy
+//! 11. Shallow Copy vs Deep Copy
 const original = { name: 'Nirob', hobbies: ['coding', 'gaming'] };
+//* Shallow Copy
 const shallow = { ...original };
 shallow.hobbies.push('reading');
 console.log(original.hobbies); // ['coding', 'gaming', 'reading'] (affected!)
 
-// Deep copy (simple but function/Date সাপোর্ট না)
+//* Deep copy (simple but function/Date সাপোর্ট না)
 const deep = JSON.parse(JSON.stringify(original));
 deep.hobbies.pop();
 console.log(original.hobbies); // unchanged
@@ -179,7 +178,7 @@ console.log(original.hobbies); // unchanged
 // আধুনিক deep copy: structuredClone (Node 17+, browsers)
 // const deepClone = structuredClone(original);
 
-//* 12. Constructor Function in Detail
+//! 12. Constructor Function in Detail
 function Product(name, price, stock) {
   this.name = name;
   this.price = price;
@@ -209,7 +208,7 @@ function createProduct(name, price, stock) {
   };
 }
 
-//* 13. Object Destructuring (অবজেক্ট ডিস্ট্রাকচারিং)
+//! 13. Object Destructuring (অবজেক্ট ডিস্ট্রাকচারিং)
 const student = {
   namee: 'John Williamson',
   age: 9,
@@ -228,28 +227,28 @@ const student = {
   },
 };
 
-// Basic destructure
+//* Basic destructure
 const { namee, age, std } = student;
 console.log(namee, age);
 
-// Default value (যদি property না থাকে)
+//* Default value (যদি property না থাকে)
 const { hobby = 'reading' } = student;
 console.log(hobby); // 'reading'
 
-// Rename variable
+//* Rename variable
 const { namee: fullName, age: years } = student;
 
-// Nested destructure
+//* Nested destructure
 const { parents: { father, email } } = student;
 console.log(father, email);
 
-// Function parameter destructuring
+//* Function parameter destructuring
 function sendEmail({ parents: { email } }) {
   console.log(`Sent email to ${email}`);
 }
 sendEmail(student);
 
-// Loop-এ destructure
+//* Loop-এ destructure
 const students = [
   { name: 'William', grade: 'A' },
   { name: 'Tom', grade: 'A+' },
@@ -258,11 +257,40 @@ for (const { name, grade } of students) {
   console.log(`${name}: ${grade}`);
 }
 
-// Rest property (বাকি properties একসাথে)
+//* Rest property (বাকি properties একসাথে)
 const { namee: sName, ...rest } = student;
 console.log(rest); // namee ছাড়া সব
 
-//* 14. Optional Chaining (?.) — নিরাপদে nested access
+//* Array of Objects destructuring
+const users = [
+  { id: 1, profile: { name: 'John', age: 25 } },
+  { id: 2, profile: { name: 'Jane', age: 30 } }
+];
+
+//? Need First name 
+const [{ profile: { name: firstName } }] = users;
+console.log(firstName); // 'John'
+//? Need Second name
+const [, { profile: { name: secondName } }] = users; //?  ^ comma দিয়ে first item skip করছে
+console.log(secondName); // 'Jane'
+//? Need two name 
+// Way-1
+const [{ profile: { name: firstName } }, { profile: { name: secondName } }] = users;
+console.log(firstName);  // 'John'
+console.log(secondName); // 'Jane'
+// Way-2
+const names = users.map(({ profile: { name } }) => name);
+console.log(names[0]); // 'John'
+console.log(names[1]); // 'Jane'
+// Way-3
+const [firstUser, secondUser] = users;
+const firstName = firstUser.profile.name;
+const secondName = secondUser.profile.name;
+
+console.log(firstName);  // 'John'
+console.log(secondName); // 'Jane'
+
+//! 14. Optional Chaining (?.) — নিরাপদে nested access
 const emp = {
   salary: { bonus: 300 },
 };
@@ -283,13 +311,13 @@ const obj = {
 obj.showBrand();
 obj.showWrong(); // undefined
 
-//* 16. Additional Useful Methods
+//! 16. Additional Useful Methods
 // Object.assign() - copy properties (উপরে দেখানো)
 // Object.defineProperty() - property descriptor set (writable, enumerable, etc.)
 // Object.is(val1, val2) - SameValue comparison (NaN===NaN true)
 console.log(Object.is(NaN, NaN)); // true
 
-//* 17. Real-life Example: একটি অনলাইন স্টোরের Product Catalog
+//! 17. Real-life Example: একটি অনলাইন স্টোরের Product Catalog
 function CatalogItem(name, price, stock) {
   this.name = name;
   this.price = price;
@@ -306,7 +334,7 @@ items.forEach(({ name, price, stock }) =>
   console.log(`${name}: ${price} TK, ${stock ? 'Available' : 'Not Available'}`)
 );
 
-//* 18. Object References (একই জায়গায় পয়েন্ট করে)
+//! 18. Object References (একই জায়গায় পয়েন্ট করে)
 const personA = { name: 'John' };
 const personB = personA;
 personB.name = 'Doe';
