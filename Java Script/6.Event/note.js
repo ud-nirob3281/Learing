@@ -1,4 +1,4 @@
-//! JavaScript Events (সম্পূর্ণ গভীর বিশ্লেষণ – বাংলা+English Note)
+//! JavaScript Events 
 
 /*
 Event কী?
@@ -43,15 +43,20 @@ btn.removeEventListener("click", handleClick); // must be same function referenc
 //* ========================
 /*
 যে কোনো ইভেন্ট handler-এ প্রথম parameter হিসেবে একটি event object পায়।
-এই object-এর মাধ্যমে ইভেন্টের সব তথ্য জানা যায়।
 */
 document.addEventListener("click", function(event) {
-  // event.type        -> "click"
-  // event.target      -> যেখানে ক্লিক হয়েছে
-  // event.currentTarget -> যার handler চলছে
-  // event.clientX, event.clientY -> মাউস পজিশন
-  // event.key (keyboard event-এ)
-  console.log(event.type, event.target);
+/*
+e.type           → ইভেন্টের নাম
+e.target         → যে element-এ ইভেন্ট ঘটেছে
+e.currentTarget  → যে element-এর handler চলছে
+e.preventDefault() → ডিফল্ট আচরণ বন্ধ
+e.stopPropagation() → বাবলিং/ক্যাপচারিং বন্ধ
+e.stopImmediatePropagation() → একই element-এর বাকি handler বন্ধ
+e.clientX/clientY → viewport-এ mouse position
+e.pageX/pageY    → document-এর সাপেক্ষে position
+e.key, e.code    → keyboard events
+e.detail         → custom event data
+/*
 });
 
 //* ========================
@@ -126,141 +131,78 @@ list.addEventListener("click", function(e) {
 });
 // পরে নতুন li যোগ করলেও automatically handle হবে।
 
-//* ========================
-//* 6. Custom Events (নিজস্ব ইভেন্ট তৈরি)
-//* ========================
-// CustomEvent constructor ব্যবহার করে:
-const myEvent = new CustomEvent("myCustomEvent", {
-  detail: { message: "Hello from custom event", time: Date.now() },
-  bubbles: true,
-  cancelable: true
-});
-// dispatch:
-document.dispatchEvent(myEvent);
-// listen:
-document.addEventListener("myCustomEvent", (e) => {
-  console.log("Custom event received:", e.detail);
-});
 
+//* 6. Once, Passive, Signal Options
 //* ========================
-//* 7. Once, Passive, Signal Options
-//* ========================
-// 7.1 once: true → listener একবার চালু হবে, তারপর auto-remove
-btn.addEventListener("click", () => console.log("Fired once"), { once: true });
+// 6.1 once: true
+/*
+একবার execute হওয়ার পর listener auto remove হয়ে যায়।
+Use case:
+- একবার click করলে কোনো কিছু initialize করা।
+- animation শেষে cleanup।
+- confirmation prompt একবার দেখানো।
+- memory leak কমাতে একবারের listener।
+*/
+// উদাহরণ: একটি button প্রথম click-এ activate, পরে আর listener থাকবে না
+const activateBtn = document.getElementById("activateBtn");
+activateBtn.addEventListener("click", function() {
+  console.log("Button activated! Listener removed.");
+  // activate logic
+}, { once: true });
 
-// 7.2 passive: true → preventDefault() কল করা হবে না, scroll পারফরমেন্স বাড়ায়
-document.addEventListener("touchstart", handler, { passive: true });
+// click যতবারই করি, দ্বিতীয়বার থেকে আর log হবে না।
 
-// 7.3 signal: AbortController দিয়ে listener remove
-const controller = new AbortController();
-btn.addEventListener("click", handler, { signal: controller.signal });
-// controller.abort(); → listener সরিয়ে ফেলবে
 
-//* ========================
-//* 8. ইভেন্টের প্রকারভেদ (Common Event Types)
-//* ========================
+// 6.2 passive: true
+/*
+মানে: listener-এ কখনো e.preventDefault() কল করা হবে না বলে ব্রাউজারকে জানানো।
+এতে scroll performance দ্রুত হয় কারণ ব্রাউজার main thread-এ preventDefault-এর জন্য অপেক্ষা করে না।
+Use case:
+- touchstart, touchmove, wheel, scroll ইভেন্টে (scroll smooth রাখতে)।
+- passive: true দিয়ে scroll block না করে custom কাজ।
+- mobile-এ scroll lag দূর হয়।
+*/
+// উদাহরণ: scroll listener (passive) - performance boost
+document.addEventListener("scroll", function(e) {
+  console.log("User scrolled, but we don't prevent default");
+  // scroll position track, lazy load ইত্যাদি
+}, { passive: true });
 
-// Mouse Events: click, dblclick, mousedown, mouseup, mouseenter, mouseleave, mousemove, contextmenu
-// Keyboard Events: keydown, keyup, keypress (deprecated)
-// Form Events: submit, change, input, focus, blur, focusin, focusout
-// Document/Window Events: DOMContentLoaded, load, beforeunload, resize, scroll
-// Drag Events: dragstart, drag, dragend, drop, etc.
-// Touch Events: touchstart, touchmove, touchend
-// Pointer Events: pointerdown, pointermove, pointerup (mouse+touch একসাথে)
+// touchmove: default prevent করলে scroll আটকে যায়। passive: true দিলে scroll unrestricted থাকে।
+document.addEventListener("touchmove", function(e) {
+  // e.preventDefault(); // passive থাকলে এটা ignore হবে বা error দেবে
+  console.log("Touch move, but scroll works smoothly");
+}, { passive: true });
 
-// উদাহরণ: Keyboard Event
+// কিছু ব্রাউজারে wheel/scroll-এর জন্য passive default true হয়ে গেছে।
+
+
+// 2.3 signal (AbortController)
+/*
+signal এর মাধ্যমে একসাথে অনেক listener remove করা যায়।
+একটা AbortController instance তৈরি করে তার signal option-এ pass করি।
+পরে controller.abort() কল করলেই সব listener remove।
+Use case:
+- SPA-তে page leave হলে সব listener একবারে clean।
+- fetch request cancel (এর সাথে AbortController already ব্যবহার করো)।
+- dynamically added listener remove।
+*/
+// উদাহরণ: multiple listener abort
+const abortController = new AbortController();
+const signal = abortController.signal;
+
+document.addEventListener("mousemove", function(e) {
+  console.log("Mouse moved", e.clientX);
+}, { signal });
+
 document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape") {
-    console.log("Escape pressed");
-  }
-  console.log("Key:", e.key, "Code:", e.code);
-});
+  console.log("Key pressed", e.key);
+}, { signal });
 
-// উদাহরণ: Form Submit
-const form = document.getElementById("myForm");
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
-  const formData = new FormData(form);
-  console.log(Object.fromEntries(formData));
-});
+// পরে যখন দরকার (component unmount)
+abortController.abort(); // সব listener remove
 
-//* ========================
-//* 9. Event Loop ও Events সম্পর্ক
-//* ========================
-/*
-ইভেন্ট Handler asynchronous ভাবে চলে না (মাইক্রোটাস্ক/ম্যাক্রোটাস্ক)।
-ইভেন্ট তখনই execute হয় যখন call stack খালি থাকে (event loop)।
-UI ইভেন্ট (click) macrotask queue-এ যায়।
-Promise (microtask) এর পরে run হয় কিন্তু animation frame এর আগে।
-*/
 
-//* ========================
-//* 10. Debounce & Throttle (ইভেন্ট ফ্রিকোয়েন্সি নিয়ন্ত্রণ)
-//* ========================
-// Debounce: শেষ ইভেন্টের নির্দিষ্ট সময় পর execute (search box)
-function debounce(fn, delay) {
-  let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-// Throttle: নির্দিষ্ট সময় অন্তর একবার execute (scroll, resize)
-function throttle(fn, limit) {
-  let inThrottle;
-  return function(...args) {
-    if (!inThrottle) {
-      fn.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-}
-
-//* ========================
-//* 11. Pointer Events vs Mouse Events
-//* ========================
-/*
-Pointer Events আধুনিক, mouse, touch, pen সব handle করে।
-pointerdown, pointerup, pointermove ইত্যাদি।
-একই সাথে mouse ও touch সমর্থন করতে চাইলে pointer events ব্যবহার করো।
-*/
-
-//* ========================
-//* 12. Clipboard, Drag & Drop, Media Events
-//* ========================
-// Clipboard: copy, cut, paste
-document.addEventListener("paste", (e) => {
-  const text = e.clipboardData.getData("text/plain");
-  console.log("Pasted:", text);
-});
-// Drag & Drop: draggable attribute, dragstart, dragover, drop
-// Media: play, pause, ended, volumechange
-
-//* ========================
-//* 13. Event Properties ও Methods সারাংশ
-//* ========================
-/*
-e.type           → ইভেন্টের নাম
-e.target         → যে element-এ ইভেন্ট ঘটেছে
-e.currentTarget  → যে element-এর handler চলছে
-e.preventDefault() → ডিফল্ট আচরণ বন্ধ
-e.stopPropagation() → বাবলিং/ক্যাপচারিং বন্ধ
-e.stopImmediatePropagation() → একই element-এর বাকি handler বন্ধ
-e.clientX/clientY → viewport-এ mouse position
-e.pageX/pageY    → document-এর সাপেক্ষে position
-e.key, e.code    → keyboard events
-e.detail         → custom event data
-*/
-
-//* ========================
-//* 14. Execution Context & Events
-//* ========================
-/*
-ইভেন্ট handler call হলে তার জন্য new execution context তৈরি হয়।
-this দ্বারা handler-এ element-কে নির্দেশ করে (addEventListener-এ)।
-Arrow function ব্যবহার করলে this lexical হয় (parent scope)।
-*/
 
 //* ========================
 //* 15. Best Practices & Performance
@@ -273,3 +215,309 @@ Arrow function ব্যবহার করলে this lexical হয় (parent sc
 - Anonymous function listener না করে named function দিয়ে পরবর্তীতে remove-সুবিধা
 - একই element-এ একই ইভেন্টের একাধিক listener avoid করো (stopImmediate যেখানে দরকার)
 */
+
+
+//* ========================
+//* 3. Common Event Types & তাদের ব্যবহার ক্ষেত্র (Use Cases) with Examples
+//* ========================
+
+// নিচে প্রতিটা ইভেন্টের পাশে use case ও ছোট উদাহরণ দেওয়া হলো।
+
+// --- Mouse Events ---
+
+// click: element-এ ক্লিক করলে; button, link, custom UI
+document.getElementById("submitBtn").addEventListener("click", () => {
+  console.log("Form submit clicked");
+});
+
+// dblclick: double click; edit mode activate, details expand
+document.querySelector(".editable").addEventListener("dblclick", function() {
+  this.contentEditable = true;
+  this.focus();
+});
+
+// mousedown / mouseup: mouse বাটন চাপা/ছাড়া; drag শুরু, custom button state
+const draggable = document.getElementById("box");
+draggable.addEventListener("mousedown", function(e) {
+  console.log("Drag start");
+  // mousemove দিয়ে drag logic
+});
+
+// mouseenter / mouseleave: element-এ মাউস ঢুকলে/বেরুলে (bubbling করে না); hover effect, tooltip
+const tooltipTrigger = document.getElementById("tooltipBtn");
+tooltipTrigger.addEventListener("mouseenter", function() {
+  document.getElementById("tooltip").style.display = "block";
+});
+tooltipTrigger.addEventListener("mouseleave", function() {
+  document.getElementById("tooltip").style.display = "none";
+});
+
+// mousemove: মাউস সরলে; custom cursor, drawing, drag
+document.addEventListener("mousemove", function(e) {
+  const coords = `X: ${e.clientX}, Y: ${e.clientY}`;
+  document.getElementById("coordsDisplay").textContent = coords;
+});
+
+// contextmenu: right-click; custom context menu
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  const customMenu = document.getElementById("customMenu");
+  customMenu.style.top = e.clientY + "px";
+  customMenu.style.left = e.clientX + "px";
+  customMenu.style.display = "block";
+});
+
+
+// --- Keyboard Events ---
+
+// keydown: key চাপা; shortcut, game control, form navigation
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey && e.key === "s") {
+    e.preventDefault();
+    console.log("Ctrl+S save shortcut triggered");
+  }
+});
+
+// keyup: key ছাড়া; live search finish, password strength (real-time check)
+const searchInput = document.getElementById("searchBox");
+searchInput.addEventListener("keyup", function() {
+  console.log("Search query:", this.value);
+  // debounced search API call
+});
+
+// input: input field-এর value change (paste, cut, delete সহ) – real-time validation
+const nameInput = document.getElementById("name");
+nameInput.addEventListener("input", function() {
+  const isValid = this.value.length >= 3;
+  document.getElementById("nameError").textContent = isValid ? "" : "Min 3 chars";
+});
+
+// change: value change + field lose focus (select, checkbox, radio, file)
+const countrySelect = document.getElementById("country");
+countrySelect.addEventListener("change", function() {
+  console.log("Selected country:", this.value);
+});
+
+// submit: form submit (button বা Enter)
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  console.log(Object.fromEntries(formData));
+});
+
+// focus / blur: element focus পায়/হারায়
+document.getElementById("email").addEventListener("focus", function() {
+  this.style.borderColor = "blue";
+});
+document.getElementById("email").addEventListener("blur", function() {
+  this.style.borderColor = "";
+  // validate email
+});
+
+// focusin / focusout: focus/blur but bubbles (parent ধরতে পারে)
+document.getElementById("formContainer").addEventListener("focusin", function() {
+  console.log("Some field focused inside form");
+});
+
+
+// --- Document/Window Events ---
+
+// DOMContentLoaded: HTML parse হওয়া শেষ, DOM ready (css, image না)
+document.addEventListener("DOMContentLoaded", function() {
+  console.log("DOM fully loaded, safe to manipulate");
+  // init app
+});
+
+// load: সব resource (images, styles) load হয়ে গেলে
+window.addEventListener("load", function() {
+  console.log("All resources loaded, hide loader");
+  document.getElementById("loader").style.display = "none";
+});
+
+// beforeunload: page leave হতে যাচ্ছে (close/refresh); confirm message
+window.addEventListener("beforeunload", function(e) {
+  e.preventDefault(); // কিছু ব্রাউজারে message দেখায়
+  e.returnValue = "Are you sure?";
+});
+
+// resize: window resize; responsive layout change, chart redraw
+window.addEventListener("resize", function() {
+  console.log("Window size:", window.innerWidth);
+  // redraw canvas
+});
+
+// scroll: page/element scroll; infinite scroll, sticky header, parallax
+window.addEventListener("scroll", function() {
+  const scrollTop = window.scrollY;
+  if (scrollTop > 100) {
+    document.getElementById("backToTop").style.display = "block";
+  } else {
+    document.getElementById("backToTop").style.display = "none";
+  }
+});
+
+
+// --- Drag Events ---
+
+// dragstart: element drag শুরু
+const dragItem = document.getElementById("dragMe");
+dragItem.addEventListener("dragstart", function(e) {
+  e.dataTransfer.setData("text/plain", this.id);
+  console.log("Drag started");
+});
+
+// dragover: drag করার সময় drop zone-এ hover; default prevent করতে হয় drop সক্ষম করতে
+const dropZone = document.getElementById("dropHere");
+dropZone.addEventListener("dragover", function(e) {
+  e.preventDefault(); // drop allow করতে
+  this.style.background = "#eee";
+});
+
+// drop: drop zone-এ element ফেলা
+dropZone.addEventListener("drop", function(e) {
+  e.preventDefault();
+  const id = e.dataTransfer.getData("text/plain");
+  const draggedEl = document.getElementById(id);
+  this.appendChild(draggedEl);
+  this.style.background = "";
+});
+
+
+// --- Touch & Pointer Events (মোবাইল) ---
+
+// touchstart: আঙুল touch; swipe শুরু, long press
+document.addEventListener("touchstart", function(e) {
+  console.log("Touch started");
+}, { passive: true });
+
+// touchmove: আঙুল সরানো; drag, pinch zoom
+document.addEventListener("touchmove", function(e) {
+  console.log("Touch moving");
+}, { passive: true });
+
+// touchend: আঙুল তুলে নেওয়া; swipe end, tap
+document.addEventListener("touchend", function(e) {
+  console.log("Touch ended");
+});
+
+// pointerdown/pointermove/pointerup: mouse+touch unified
+document.addEventListener("pointermove", function(e) {
+  console.log("Pointer moved, pointerType:", e.pointerType); // "mouse" or "touch"
+});
+
+
+// --- Media Events ---
+const video = document.getElementById("myVideo");
+video.addEventListener("play", () => console.log("Video playing"));
+video.addEventListener("pause", () => console.log("Video paused"));
+video.addEventListener("ended", () => console.log("Video ended"));
+// ... timeupdate, volumechange etc.
+
+// --- Clipboard Events ---
+document.addEventListener("copy", (e) => {
+  console.log("Content copied");
+});
+document.addEventListener("paste", (e) => {
+  const pastedText = e.clipboardData.getData("text/plain");
+  console.log("Pasted:", pastedText);
+});
+
+  
+  
+//* ========================
+//* Custom Event (নিজস্ব ইভেন্ট তৈরি)
+//* ========================
+/*
+কেন দরকার?
+- যখন built-in ইভেন্ট দিয়ে প্রকাশ করা যায় না এমন কিছু ঘটলে signal পাঠাতে চাই।
+- Component-to-component communication (loose coupling) সহজ হয়।
+- State change, UI update, custom action track করা।
+- Large apps-এ Redux/Context-এর আগে lightweight pub/sub হিসেবেও কাজ করে।
+
+মূল বিষয়:
+  - new CustomEvent(eventName, options) দিয়ে ইভেন্ট তৈরি
+  - dispatchEvent(element) দিয়ে trigger
+  - detail property এর মাধ্যমে data পাঠানো
+  - bubbles: true দিলে parent-এ ওঠে (bubbling)
+  - cancelable: true দিলে preventDefault() করা যায়
+*/
+
+// উদাহরণ 1: Custom event তৈরি, dispatch, ও listen
+// একটা custom ইভেন্ট "userLoggedIn" তৈরি করি, সাথে user data পাঠাই
+const loginEvent = new CustomEvent("userLoggedIn", {
+  detail: {
+    username: "Nirob",
+    email: "nirob@example.com",
+    loginTime: Date.now()
+  },
+  bubbles: true,    // document পর্যন্ত bubble করবে
+  cancelable: false // preventDefault() অকার্যকর
+});
+
+// dispatch on document (or any element)
+document.dispatchEvent(loginEvent);
+
+// listener
+document.addEventListener("userLoggedIn", function(e) {
+  console.log("User logged in:", e.detail.username, e.detail.email);
+  // UI update, API call, etc.
+});
+
+// উদাহরণ 2: UI component এর ভেতর থেকে parent-কে notify
+// একটা modal component imagine করি
+const modal = document.getElementById("myModal");
+const closeBtn = document.getElementById("closeModalBtn");
+
+closeBtn.addEventListener("click", function() {
+  // modal close হলে "modalClosed" event fire
+  const closedEvent = new CustomEvent("modalClosed", {
+    detail: { modalId: "myModal" },
+    bubbles: true
+  });
+  modal.dispatchEvent(closedEvent);
+});
+
+// parent component listen
+document.addEventListener("modalClosed", function(e) {
+  console.log(`Modal ${e.detail.modalId} closed`);
+  // overlay remove, body class remove ইত্যাদি
+});
+
+// উদাহরণ 3: Validation event – form field-এ custom valid/invalid
+const emailInput = document.getElementById("email");
+emailInput.addEventListener("blur", function(e) {
+  const isValid = e.target.value.includes("@");
+  // custom ইভেন্ট fire করি
+  const validEvent = new CustomEvent("emailValidated", {
+    detail: { field: "email", valid: isValid },
+    bubbles: true
+  });
+  e.target.dispatchEvent(validEvent);
+});
+
+// ব্যবহার: error message দেখানো
+document.addEventListener("emailValidated", function(e) {
+  if (!e.detail.valid) {
+    console.log("Email invalid!");
+  }
+});
+
+// উদাহরণ 4: Timer শেষে custom event
+function countdown(seconds) {
+  let remaining = seconds;
+  const timer = setInterval(() => {
+    remaining--;
+    if (remaining === 0) {
+      clearInterval(timer);
+      const endEvent = new CustomEvent("countdownFinished", {
+        detail: { totalSeconds: seconds }
+      });
+      document.dispatchEvent(endEvent);
+    }
+  }, 1000);
+}
+document.addEventListener("countdownFinished", (e) => {
+  console.log("Countdown finished after", e.detail.totalSeconds, "seconds");
+});
+countdown(3);
+    
