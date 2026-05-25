@@ -85,6 +85,22 @@ console.log(merged);
 const [firstItem, secondItem, ...restItems] = salad;
 console.log(restItems); // ['🥦', '🥒', '🌽', '🥕', '🥑']
 
+// Nested Array Destructuring
+const colors = ['red', ['green', 'lime'], 'blue'];
+const [primary, [secondary, tertiary], quaternary] = colors;
+console.log(primary);   // 'red'
+console.log(secondary); // 'green'
+console.log(tertiary);  // 'lime'
+
+const users = [
+  { id: 1, profile: { name: 'John', age: 25 } },
+  { id: 2, profile: { name: 'Jane', age: 30 } }
+];
+
+const [{ profile: { name: firstName } }] = users;
+console.log(firstName); // 'John'
+
+
 //! 7. Spread & Rest (Spread = copy/merge, Rest = gather)
 // Spread for shallow copy
 const copySalad = [...salad];
