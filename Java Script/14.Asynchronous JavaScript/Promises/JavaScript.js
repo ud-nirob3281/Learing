@@ -274,47 +274,197 @@ myPromise2
     return value;
   });
 
-  //* Handel multipal Promises
-  let step1 = new Promise((resolve, reject) => {
+//! Promise Combinators (একাধিক Promise Handle করার পদ্ধতি)
+
+/*
+যখন একাধিক Promise একসাথে handle করতে চাই, তখন এই methods ব্যবহার হয়।
+এগুলোকে Promise Combinators বলে।
+
+প্রত্যেকটির behaviour আলাদা। নিচে detail বুঝিয়ে দিচ্ছি।
+*/
+
+// Sample Promises (প্রত্যেকটি example-এ ব্যবহারের জন্য)
+let step1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('Step 1 Completed');
+  }, 1000);
+});
+
+let step2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('Step 2 Completed');
+  }, 1500);
+});
+
+let step3 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject('Step 3 Failed');
+  }, 500);
+});
+
+//* ========================
+//* ১. Promise.all([promises])
+//* ========================
+/*
+বৈশিষ্ট্য:
+- সবগুলো Promise resolve হলে তবেই resolve হয়।
+- সবগুলোর resolved value একটি array-তে দেয়।
+- যেকোনো একটি Promise reject হলে সাথেসাথে reject হয়,
+  এবং বাকিগুলোর result ignore হয়।
+
+Use Case: যখন সবগুলো asynchronous operation সম্পন্ন হওয়া দরকার।
+  যেমন: user profile + user posts + user friends একসাথে load করা।
+*/
+
+Promise.all([step1, step2])
+  .then(res => {
+    console.log('Promise.all result:', res);
+    // Output (1.5s পরে): ['Step 1 Completed', 'Step 2 Completed']
+  })
+  .catch(err => {
+    console.log('Promise.all error:', err);
+  });
+
+// reject সহ example
+Promise.all([step1, step3])
+  .then(res => console.log(res))
+  .catch(err => console.log('Promise.all with reject:', err));
+  // Output (500ms পরে): "Promise.all with reject: Step 3 Failed"
+
+
+//* ========================
+//* ২. Promise.any([promises])
+//* ========================
+/*
+বৈশিষ্ট্য:
+- যেকোনো একটি Promise resolve হলেই resolve হয়।
+- শুধুমাত্র resolve value return করে, array না।
+- যদি সবগুলো Promise reject হয়, তাহলে AggregateError দেয়।
+
+Use Case: দ্রুততম source থেকে data আনা।
+  যেমন: multiple CDN থেকে একই image load, যেটা আগে load হবে সেটাই use।
+*/
+
+Promise.any([step1, step2])
+  .then(res => {
+    console.log('Promise.any result:', res);
+    // Output (1s পরে): "Step 1 Completed"
+  })
+  .catch(err => {
+    console.log('Promise.any error:', err);
+  });
+
+
+//* ========================
+//* ৩. Promise.allSettled([promises])
+//* ========================
+/*
+বৈশিষ্ট্য:
+- সবগুলো Promise complete হওয়া পর্যন্ত অপেক্ষা করে (resolve বা reject যাই হোক)।
+- প্রতিটি Promise-এর result object array return করে।
+  প্রতিটি object-এ:
+    { status: 'fulfilled', value: ... }  অথবা
+    { status: 'rejected',  reason: ... }
+
+Use Case: সবগুলো operation-এর result জানা দরকার, কিছু fail হলেও বাকিগুলো process করতে হবে।
+  যেমন: batch file upload, কিছু fail করলেও বাকিগুলোর status দেখানো।
+*/
+
+Promise.allSettled([step1, step2, step3])
+  .then(res => {
+    console.log('Promise.allSettled result:', res);
+    // Output (1.5s পরে):
+    // [
+    //   { status: 'fulfilled', value: 'Step 1 Completed' },
+    //   { status: 'fulfilled', value: 'Step 2 Completed' },
+    //   { status: 'rejected',  reason: 'Step 3 Failed' }
+    // ]
+  });
+
+
+//* ========================
+//* ৪. Promise.race([promises])
+//* ========================
+/*
+বৈশিষ্ট্য:
+- যেই Promise সবার আগে complete হবে (resolve বা reject), সেটার result নিয়ে resolve/reject হয়।
+- Array return করে না, single value/error।
+
+Use Case: timeout implement করা।
+  যেমন: API call-এর সাথে timeout Promise race করানো;
+  API 5 সেকেন্ডের মধ্যে response না দিলে timeout reject করবে।
+*/
+
+Promise.race([step1, step2])
+  .then(res => {
+    console.log('Promise.race result:', res);
+    // Output (1s পরে): "Step 1 Completed"
+  })
+  .catch(err => {
+    console.log('Promise.race error:', err);
+  });
+
+// resolve/reject mixed
+Promise.race([step3, step1])
+  .then(res => console.log('Race mixed:', res))
+  .catch(err => console.log('Race mixed error:', err));
+  // Output (500ms পরে): "Race mixed error: Step 3 Failed"
+
+
+
+//* ========================
+//* ৬. Real-life Example (API Call Simulation)
+//* ========================
+
+function fetchUser(id) {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('Step 1 Completed');
-    }, 1000);
-  });
-  let step2 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('Step 2 completed');
-    }, 1500);
-  });
-
-  step1.then(res => {
-    // console.log(res);
-  });
-  step2.then(res => {
-    //console.log(res);
-  });
-
-  //promise.all([promises])
-  //? দুইটা Promise কে Array আকারে দেখতে চাইলে
-  Promise.all([step1, step2]).then(res => {
-    //console.log(res);
-  });
-
-  //promise.any([promises])
-  Promise.any([step1, step2]).then(res => {
-    // console.log(res);
-  });
-
-  //promise.allSettled([promises])
-  Promise.allSettled([step1, step2]).then(res => {
-    // console.log(res);
-  });
-
-  //promise.race([promises])
-  //? যেইটা আগে হবে সেইটা আগে দেখাবে
-  Promise.race([step1, step2]).then(res => {
-    // console.log(res);
+      if (id === 999) reject('User not found');
+      else resolve({ id, name: `User${id}` });
+    }, Math.random() * 2000);
   });
 }
+
+const user1 = fetchUser(1);
+const user2 = fetchUser(2);
+const user3 = fetchUser(999); // will reject
+
+// Promise.all: সব user দরকার
+Promise.all([user1, user2])
+  .then(users => console.log('All users:', users))
+  .catch(err => console.log('Failed to fetch all:', err));
+
+// Promise.allSettled: reject হলেও status চাই
+Promise.allSettled([user1, user2, user3])
+  .then(results => {
+    results.forEach((r, i) => {
+      if (r.status === 'fulfilled') console.log(`User${i+1}:`, r.value.name);
+      else console.log(`User${i+1} failed:`, r.reason);
+    });
+  });
+
+// Promise.race: দ্রুততম user
+Promise.race([user1, user2])
+  .then(fastest => console.log('Fastest user:', fastest));
+
+// Promise.any: দ্রুততম successful user (reject skip)
+Promise.any([user1, user3, user2])
+  .then(firstSuccess => console.log('First success:', firstSuccess));
+
+
+//* ========================
+//* ৭. সংক্ষেপে Comparison Table
+//* ========================
+/*
+| Method           | কখন resolve/reject?                           | Return Value               |
+|------------------|-----------------------------------------------|----------------------------|
+| Promise.all      | সব resolve হলে resolve, একটাও reject হলে reject | Array of all results       |
+| Promise.any      | যেকোনো একটি resolve হলে resolve                | Single first resolve value |
+| Promise.allSettled| সব complete (resolve/reject) হলে resolve       | Array of {status,value/reason} |
+| Promise.race     | প্রথম complete (resolve/reject) হলে            | Single first value/error   |
+*/
+
+
 
 //!Task
 {
