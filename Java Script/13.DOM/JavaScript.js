@@ -112,19 +112,29 @@ let sel9 = document.querySelector('.fruits li:last-child');
   //console.log(newText.replaceAll(',', ' ')); //All, remove
 
   //* Use Replace with
+  //· replaceWith() মূল নোডকে সরিয়ে ফেলে এবং তার জায়গায় নতুন নোড বসায়।
+  // এটি একাধিক নোড বা টেক্সট স্ট্রিং গ্রহণ করতে পারে।
   const newFruit2 = document.createElement('li');
   newFruit2.innerHTML = 'Banana';
   //sel8.replaceWith(newFruit2);
 
   //* Remove Element
-  //1
+  //remove 
   let sel10 = document.querySelector('.fruits li:nth-child(3)');
   // sel10.remove(); //? Remove Element
-  //2
+  
+  //removeChild 
+  // Syntax: parentNode.removeChild(childNode);
+  /*
+    · parentNode – যে প্যারেন্ট নোডের ভিতর থেকে রিমুভ করবেন
+    · childNode – যে নির্দিষ্ট চাইল্ড নোডটি রিমুভ করতে চান
+  */
   let select = document.querySelector('#menu');
   //console.log(select);
   //select.removeChild(select.children[0]);
-  //3
+  
+  //replaceChildren 
+  // replaceChildren() প্যারেন্ট নোডের সব চাইল্ড একসাথে সরিয়ে ফেলে। 
   const sel11 = document.querySelector('#UDN');
   //console.log(sel11);
   //select.replaceChildren(sel11);
