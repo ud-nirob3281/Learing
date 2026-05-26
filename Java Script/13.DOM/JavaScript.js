@@ -65,6 +65,12 @@ document.querySelector('h1').innerHTML = 'Developer';
   sel6.append(newElement); // Last
 
   //*Inseart before (কোন Tag এর আগে অন্য Tag দিতে চাইলে)
+  // Syntax: parentNode.insertBefore(newNode, referenceNode);
+  /*
+  · parentNode – যে নোডের মধ্যে নতুন নোডটি ঢোকানো হবে (প্যারেন্ট নোড)।
+· newNode – যে নোডটি ঢোকাতে চান।
+· referenceNode – এই নোডের আগে newNode বসবে। যদি referenceNode-এর মান null হয়, তাহলে newNode প্যারেন্ট নোডের সবার শেষে যুক্ত হবে।
+  */
   const h1Elem = document.getElementById('UDN');
   const creP = document.createElement('p');
   creP.innerHTML = 'Using Inseart Before';
