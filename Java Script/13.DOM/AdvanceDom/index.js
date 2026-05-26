@@ -73,7 +73,11 @@ const box = document.getElementById('box');
 const shadow = box.attachShadow({ mode: 'open' });
 shadow.innerHTML = `<style>p { color: red; }</style><p>Hello Shadow!</p>`;
 
-//! Template Cloneing
+//! cloneNode 
+//node.cloneNode();    // shallow clone (false)
+//node.cloneNode(false); // shallow clone
+//node.cloneNode(true);  // deep clone
+
 const template = document.querySelector('#card-Tem');
 const clone = template.content.cloneNode(true);
 clone.querySelector('.title').textContent = 'Advance DOM';
