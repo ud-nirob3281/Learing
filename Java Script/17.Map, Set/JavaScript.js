@@ -136,43 +136,14 @@ const the4Table = new Set([4, 8, 12, 16]);
 //console.log(numbers.isSupersetOf(the4Table)); // true
 
 //! WeakMap
-//weakMap key suppot only object
-//weakMap suppot only 4 Methood set, get, has, delete
-
-let user = { name: 'tapaScript' };
-//const allUsers = [user];
-
-const uMap = new Map();
-uMap.set(user, true);
-
-user = null;
-
-//console.log(uMap);
-
-let addr = { country: 'India' };
-
-const wMap = new WeakMap();
-wMap.set(addr, true);
-
-addr = null;
-
-//console.log(wMap);
-
-//! WeakSet
-//weakSet key suppot only object
-//weakSet suppot method add, has, delete
-const onlineUsers = new WeakSet();
-
-let user1 = { name: 'Alice' };
-let user2 = { name: 'Bob' };
-
-onlineUsers.add(user1);
-onlineUsers.add(user2);
-//console.log(onlineUsers.has(user1));
-
-user1 = null;
-
-//console.log(onlineUsers.has(user1));
+/*
+WeakMap এর বৈশিষ্ট্য:
+✅ শুধুমাত্র Object key গ্রহণ করে (string, number নয়)
+✅ Garbage Collection সাপোর্ট করে - যদি object null করা হয়, WeakMap তা remove করে
+✅ শুধুমাত্র 4টি method: set(), get(), has(), delete()
+✅ Iteration নেই - forEach, keys(), values() কাজ করে না
+✅ Size property নেই/*
+//WeakMap উদাহরণ:
 
 //! Task
 //1
