@@ -142,8 +142,28 @@ WeakMap এর বৈশিষ্ট্য:
 ✅ Garbage Collection সাপোর্ট করে - যদি object null করা হয়, WeakMap তা remove করে
 ✅ শুধুমাত্র 4টি method: set(), get(), has(), delete()
 ✅ Iteration নেই - forEach, keys(), values() কাজ করে না
-✅ Size property নেই/*
+✅ Size property নেই*/
 //WeakMap উদাহরণ:
+
+// Regular Map - memory leak হতে পারে
+let user = { name: 'tapaScript' };
+const uMap = new Map();
+uMap.set(user, true);
+
+user = null;  // কিন্তু uMap এ user object থেকে যায়!
+console.log(uMap);  // Map এ এখনো আছে
+
+// WeakMap - garbage collection হয়
+let addr = { country: 'India' };
+const wMap = new WeakMap();
+wMap.set(addr, true);
+
+addr = null;  // এখন WeakMap থেকে সরে যায়!
+console.log(wMap);  // WeakMap খালি
+
+
+//! WeakSet
+
 
 //! Task
 //1
