@@ -163,7 +163,27 @@ console.log(wMap);  // WeakMap খালি
 
 
 //! WeakSet
+/*WeakSet এর বৈশিষ্ট্য:
+✅ শুধুমাত্র Object values রাখে
+✅ Garbage Collection সাপোর্ট করে
+✅ শুধুমাত্র 3টি method: add(), has(), delete()
+✅ Iteration নেই
+✅ Size property নেই*/
 
+//WeakSet উদাহরণ:
+JavaScript
+const onlineUsers = new WeakSet();
+
+let user1 = { name: 'Alice' };
+let user2 = { name: 'Bob' };
+
+onlineUsers.add(user1);
+onlineUsers.add(user2);
+
+console.log(onlineUsers.has(user1));  // true
+
+user1 = null;  // এখন WeakSet থেকে সরে যায়
+console.log(onlineUsers.has(user1));  
 
 //! Task
 //1
