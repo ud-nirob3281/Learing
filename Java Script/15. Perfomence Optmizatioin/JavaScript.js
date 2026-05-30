@@ -121,64 +121,6 @@ console.log(memoUse(45));
 let t4 = Date.now();
 console.log(t4 - t3); */ //? Time 0s
 
-//!Task
-//1
-function myDebounce(fn, delay) {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-const teAr = document.getElementById('textAr');
-const textVal = document.getElementById('textVal');
-const mes = document.getElementById('mess');
-
-const fn = function (e) {
-  let carrteterCount = teAr.value.length;
-
-  textVal.innerHTML = `Characters typed: ${carrteterCount}`;
-  if (carrteterCount === 200) {
-    mes.innerText = `Maximum 200 characters allowed`;
-  } else {
-    mes.innerText = '';
-  }
-};
-
-teAr.addEventListener('input', myDebounce(fn, 500));
-
-//2
-
-const showHW = document.getElementById('showHW');
-const catagory = document.getElementById('catagory');
-
-function myThrrotle(fn, lim) {
-  let lastCall = 0;
-  return function (...args) {
-    let now = Date.now();
-    if (now - lastCall >= lim) {
-      lastCall = now;
-      fn.apply(this, args);
-    }
-  };
-}
-
-const myRe = function () {
-  const valueX = window.innerWidth;
-  const valueY = window.innerHeight;
-  showHW.innerText = `Window X:${valueX} Y:${valueY}`;
-
-  if (valueX >= 1024) {
-    catagory.innerText = `Catagory DETOP`;
-  } else if (valueX >= 640) {
-    catagory.innerText = `Catagory TABLET`;
-  } else {
-    catagory.innerText = `Catagory MOBIL`;
-  }
-};
-
-window.addEventListener('resize', myThrrotle(myRe, 500));
 
 //3
 
