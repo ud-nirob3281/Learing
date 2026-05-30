@@ -242,5 +242,24 @@ const sorting = lists.toSorted(function (a, b) {
 });
 
 const filtering = lists.filter(value => value.name.includes('10'));
+function suff(list) {
+  let listClo = [...list];
+
+  for (let i = 0; i <= lists.length - 1; i++) {
+    let j = Math.floor(Math.random() * i + 1);
+    [listClo[i], listClo[j]] = [listClo[j], listClo[i]];
+  }
+  return listClo;
+}
+console.log(sorting);
+sort.onclick = () => {
+  newData(sorting);
+};
+filter.onclick = () => {
+  newData(filtering);
+};
+shuffer.onclick = () => {
+  newData(suff(lists));
+};
 
     
