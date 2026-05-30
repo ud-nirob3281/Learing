@@ -122,22 +122,3 @@ let t4 = Date.now();
 console.log(t4 - t3); */ //? Time 0s
 
 
-function suff(list) {
-  let listClo = [...list];
-
-  for (let i = 0; i <= lists.length - 1; i++) {
-    let j = Math.floor(Math.random() * i + 1);
-    [listClo[i], listClo[j]] = [listClo[j], listClo[i]];
-  }
-  return listClo;
-}
-console.log(sorting);
-sort.onclick = () => {
-  newData(sorting);
-};
-filter.onclick = () => {
-  newData(filtering);
-};
-shuffer.onclick = () => {
-  newData(suff(lists));
-};
